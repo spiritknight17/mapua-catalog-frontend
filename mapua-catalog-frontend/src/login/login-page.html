@@ -1,0 +1,28 @@
+<div class="LoginPage">
+  <div class="LoginComponent">
+    <div class="LoginForm">
+      <div class="TitleAndDescription">
+        <div class="Title">
+          <h1 class="mapua">MAPÚA</h1>
+          <h1 class="cataloghub">CatalogHub</h1>
+        </div>
+        <p>Cataloging Task Management Platform</p>
+      </div>
+
+      <form method="POST" class="Form" (submit)="onSubmit($event)">
+        <h2>Login</h2>
+        <div class="error-message" *ngIf="error()">{{ error() }}</div>
+        <label for="Email">Email</label>
+        <input type="email" id="Email" name="Email" class="email" required>
+        <label for="Password">Password</label>
+        <input type="password" id="Password" name="Password" class="password" required>
+        <button type="submit" class="login" id="login" name="login">Login</button>
+        <a [routerLink]="'/forgot-password'"><u>Forgot Password</u></a>
+      </form>
+    </div>
+
+    <div class="LoginBackground">
+      <img src="/Assets/Background/login-background.png" alt="login-background" class="login-background">
+    </div>
+  </div>
+</div>
