@@ -10,12 +10,11 @@ import { AuthService } from './auth.service';
   templateUrl: './login-page.html',
   styleUrl: './login.css'
 })
+//Placeholder for API calling of login
 export class LoginPage {
   private readonly auth = inject(AuthService);
   private readonly router = inject(Router);
-
   error = signal<string | null>(null);
-
   onSubmit(event: Event) {
     event.preventDefault();
     this.error.set(null);
@@ -23,7 +22,6 @@ export class LoginPage {
     const data = new FormData(form);
     const email = String(data.get('Email') || '');
     const password = String(data.get('Password') || '');
-
     this.auth.login(email, password).subscribe({
       next: () => {
         this.router.navigate(['/mc-board']);
