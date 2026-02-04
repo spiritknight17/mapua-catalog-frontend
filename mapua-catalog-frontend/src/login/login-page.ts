@@ -10,7 +10,7 @@ import { FormsModule } from '@angular/forms';
 @Component({
   selector: 'app-login-page',
   standalone: true,
-  imports: [CommonModule, RouterLink, ReactiveFormsModule, HttpClientModule, FormsModule],
+  imports: [CommonModule, ReactiveFormsModule, HttpClientModule, FormsModule],
   templateUrl: './login-page.html',
   styleUrl: './login.css',
 })
@@ -21,8 +21,8 @@ export class LoginPage {
   router = inject(Router);
   error = signal<string | null>(null);
   loginObj: any = {
-    username: 'Derven',
-    password: 'jabolbol',
+    username: '',
+    password: '',
   };
   /*constructor(
     private authService: AuthService,
