@@ -5,7 +5,7 @@ import { RouterLink, Router } from '@angular/router';
 @Component({
   selector: 'app-forgot-password',
   standalone: true,
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule],
   templateUrl: './forgot-password.html',
   styleUrl: './forgot-password.css',
 })

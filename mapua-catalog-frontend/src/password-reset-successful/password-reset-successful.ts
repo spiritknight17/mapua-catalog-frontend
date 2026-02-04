@@ -3,7 +3,7 @@ import { RouterLink, Router } from "@angular/router";
 
 @Component({
   selector: 'app-password-reset-successful',
-  imports: [RouterLink],
+  imports: [],
   templateUrl: './password-reset-successful.html',
   styleUrl: './password-reset-successful.css',
 })
