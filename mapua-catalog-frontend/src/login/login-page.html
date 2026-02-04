@@ -11,13 +11,13 @@
 
       <form method="POST" class = "Form" (ngSubmit)="onLogin()">
         <h2>Login</h2>
-        <!--<div class="error-message"*ngIf="error()">{{ error() }}</div>-->
+        <div class="error-message"*ngIf="error()">{{ error() }}</div>
         <label for="username">Username</label>
         <input type="text" id="username" name="username" class="username" [(ngModel)]="loginObj.username" required >
         <label for="password">Password</label>
         <input type="password" id="password" name="password" class="password" [(ngModel)]="loginObj.password" required>
         <button type="submit" class="login" id="login" name="login">Login</button>
-        <a [routerLink]="'/forgot-password'"><u>Forgot Password</u></a>
+        <!--<a [routerLink]="'/forgot-password'"><u>Forgot Password</u></a>-->
       </form>
     </div>
 
