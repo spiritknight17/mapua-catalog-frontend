@@ -21,7 +21,7 @@ export class LoginPage {
   loginObj: any = {
     username: 'Derven',
     password: 'jabolbol',
-  };
+  }
   constructor(
     private authService: AuthService,
     private router: Router,
