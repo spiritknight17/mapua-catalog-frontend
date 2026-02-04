@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from './auth.service';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { HttpClient, HttpClientModule, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { FormsModule } from '@angular/forms';
 
@@ -12,23 +12,38 @@ import { FormsModule } from '@angular/forms';
   standalone: true,
   imports: [CommonModule, RouterLink, ReactiveFormsModule, HttpClientModule, FormsModule],
   templateUrl: './login-page.html',
-  styleUrl: './login.css'
+  styleUrl: './login.css',
 })
 //Placeholder for API calling of login
 export class LoginPage {
+  http = inject(HttpClient);
+
   loginObj: any = {
-    username: '',
-    password: ''
+    username: 'Derven',
+    password: 'jabolbol',
   };
-  constructor(private authService: AuthService, private router: Router){}
-  onLogin(){
-    this.authService.onLogin(this.loginObj).subscribe((res: any) => {
-      debugger
-      console.log('res', res)
-      localStorage.setItem('access_token', res.access_token);
-      localStorage.setItem('refresh_token', res.refresh_token);
-      this.router.navigateByUrl('/mc-board');
-    })
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+  ) {}
+
+  onLogin() {
+    const body = new HttpParams()
+      .set('username', this.loginObj.username)
+      .set('password', this.loginObj.password)
+      .set('grant_type', 'password');
+
+    this.http
+      .post<any>('http://localhost:8000/rest/login', body.toString(), {
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+      })
+      .subscribe((res) => {
+        localStorage.setItem('access_token', res.access_token);
+        localStorage.setItem('refresh_token', res.refresh_token);
+        this.router.navigateByUrl('/mc-board');
+      });
   }
 
   /*formbuilder = inject(FormBuilder);
