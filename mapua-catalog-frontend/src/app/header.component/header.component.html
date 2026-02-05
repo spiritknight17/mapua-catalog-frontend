@@ -1,0 +1,23 @@
+<header class="app-header">
+  <div class="logo-section">
+    <span class="logo-text">MC</span>
+    <span class="app-name">CatalogHub</span>
+  </div>
+
+  <nav class="nav-links">
+    <a routerLink="/mc-board" routerLinkActive="active">MC Board</a>
+    <a routerLink="/book-catalog" routerLinkActive="active">Book Catalog</a>
+    <a routerLink="/calendar" routerLinkActive="active">Calendar</a>
+    <a routerLink="/add-book" routerLinkActive="active">Add Book</a>
+  </nav>
+
+  <div class="header-right">
+    <button class="notifications-btn">
+      🔔
+    </button>
+
+    <div class="user-avatar">
+      {{ userInitials }}
+    </div>
+  </div>
+</header>

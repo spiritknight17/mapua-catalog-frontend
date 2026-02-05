@@ -5,10 +5,12 @@ import { ForgotPassword } from '../forgot-password/forgot-password';
 import { PasswordRecovery } from '../password-recovery/password-recovery';
 import { ResetPassword } from '../reset-password/reset-password';
 import { PasswordResetSuccessful } from '../password-reset-successful/password-reset-successful';
+import { HeaderComponent } from '../app/header.component/header.component';
 
 export const routes: Routes = [
   { path: '', component: LoginPage },
   { path: 'mc-board', component: McBoard },
+  { path: 'header', component: HeaderComponent },
   { path: 'forgot-password', component: ForgotPassword },
   { path: 'password-recovery', component: PasswordRecovery },
   { path: 'reset-password', component: ResetPassword},
