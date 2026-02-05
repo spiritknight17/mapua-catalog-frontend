@@ -1,1 +1,14 @@
-@import "tailwindcss";
+@import 'tailwindcss';
+
+:root {
+  --primary-color: #9a0000;
+  --secondary-color: #e9a015;
+  --background-color: #ebd9cb;
+  --tertiary-color: #5A0000;
+  --modal-color: white;
+  --text-color: #111827;
+
+  --font-sans: 'Inter', sans-serif;
+  --font-serif: 'Merriweather', serif;
+  --font-main: 'Poppins', sans-serif;
+}

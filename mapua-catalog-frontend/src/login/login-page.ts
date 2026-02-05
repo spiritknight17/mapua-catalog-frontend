@@ -21,7 +21,7 @@ export class LoginPage {
   loginObj: any = {
     username: 'Derven',
     password: 'jabolbol',
-  }
+  };
   constructor(
     private authService: AuthService,
     private router: Router,
@@ -42,7 +42,7 @@ export class LoginPage {
       .subscribe((res) => {
         localStorage.setItem('access_token', res.access_token);
         localStorage.setItem('refresh_token', res.refresh_token);
-        this.router.navigateByUrl('/mc-board');
+        this.router.navigateByUrl('/header');
       });
   }
 
