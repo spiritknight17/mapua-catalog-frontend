@@ -7,6 +7,7 @@ import { LoginPage } from './login-page';
 import { McBoard } from '../mc-board/mc-board';
 import { ForgotPassword } from '../forgot-password/forgot-password';
 import { AuthService } from './auth.service';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
 
 describe('LoginPage navigation and auth', () => {
   let fixture: ComponentFixture<LoginPage>;
@@ -25,7 +26,7 @@ describe('LoginPage navigation and auth', () => {
           { path: 'forgot-password', component: ForgotPassword },
         ]),
       ],
-      providers: [{ provide: AuthService}],
+      providers: [{ provide: AuthService, HTTP_INTERCEPTORS, useClass: LoginPage, multi: true}],
     }).compileComponents();
 
     router = TestBed.inject(Router);
