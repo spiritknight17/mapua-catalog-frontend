@@ -5,16 +5,29 @@
   </div>
 
   <nav class="nav-links">
-    <a routerLink="/mc-board" routerLinkActive="active">MC Board</a>
-    <a routerLink="/book-catalog" routerLinkActive="active">Book Catalog</a>
-    <a routerLink="/calendar" routerLinkActive="active">Calendar</a>
-    <a routerLink="/add-book" routerLinkActive="active">Add Book</a>
+    <a routerLink="/mc-board" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+      MC Board
+    </a>
+
+    <a
+      routerLink="/book-catalog"
+      routerLinkActive="active"
+      [routerLinkActiveOptions]="{ exact: true }"
+    >
+      Book Catalog
+    </a>
+
+    <a routerLink="/calendar" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+      Calendar
+    </a>
+
+    <a routerLink="/add-book" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+      Add Book
+    </a>
   </nav>
 
   <div class="header-right">
-    <button class="notifications-btn">
-      🔔
-    </button>
+    <button class="notifications-btn">🔔</button>
 
     <div class="user-avatar">
       {{ userInitials }}

@@ -3,11 +3,11 @@ import { HeaderComponent } from '../../core/header/header.component';
 import { MainLabelComponent } from '../../shared/components/main-label/main-label';
 
 @Component({
-  selector: 'app-encode-book-page.component',
+  selector: 'app-calendar-page',
   imports: [HeaderComponent, MainLabelComponent],
-  templateUrl: './encode-book-page.component.html',
-  styleUrl: './encode-book-page.component.css',
+  templateUrl: './calendar-page.html',
+  styleUrl: './calendar-page.css',
 })
-export class EncodeBookPageComponent {
+export class CalendarPage {
 
 }
