@@ -11,13 +11,13 @@
       "projectType": "application",
       "schematics": {},
       "root": "",
-      "sourceRoot": "src/app",
+      "sourceRoot": "src",
       "prefix": "app",
       "architect": {
         "build": {
           "builder": "@angular/build:application",
           "options": {
-            "browser": "src/app/main.ts",
+            "browser": "src/main.ts",
             "tsConfig": "tsconfig.app.json",
             "assets": [
               {
@@ -25,10 +25,7 @@
                 "input": "public"
               }
             ],
-            "styles": [
-              "src/material-theme.scss",
-              "src/styles.css"
-            ],
+            "styles": ["src/material-theme.scss", "src/styles.css"],
             "server": "src/app/main.server.ts",
             "outputMode": "server",
             "ssr": {

@@ -3,7 +3,16 @@ import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { HttpClient, HttpClientModule, HttpEvent, HttpHandler, HttpHeaders, HttpInterceptor, HttpParams, HttpRequest } from '@angular/common/http';
+import {
+  HttpClient,
+  HttpClientModule,
+  HttpEvent,
+  HttpHandler,
+  HttpHeaders,
+  HttpInterceptor,
+  HttpParams,
+  HttpRequest,
+} from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { FormsModule } from '@angular/forms';
 
@@ -47,18 +56,18 @@ export class LoginPage {
           'Content-Type': 'application/x-www-form-urlencoded',
         },
       })
-      .subscribe({ 
-        next: (res) =>{
+      .subscribe({
+        next: (res) => {
           localStorage.setItem('access_token', res.access_token);
           localStorage.setItem('refresh_token', res.refresh_token);
-          this.router.navigateByUrl('/kanban-board');
+          this.router.navigateByUrl('/mc-board');
         },
         error: (err) => {
           console.error('Login Failed!', err);
-          if (err.status === 401){
+          if (err.status === 401) {
             this.error.set('Invalid Credentials!');
           }
-        }
+        },
       });
   }
 
