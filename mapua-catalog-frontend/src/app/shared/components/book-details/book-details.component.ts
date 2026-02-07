@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { BookCardComponent } from '../book-card/book-card.component';
 
 export interface BookDetailField {
   label: string;
@@ -18,7 +19,7 @@ export interface BookDetailField {
 
 @Component({
   selector: 'app-book-details',
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, BookCardComponent],
   templateUrl: './book-details.component.html',
   styleUrl: './book-details.component.css',
 })
@@ -97,5 +98,10 @@ export class BookDetailsComponent {
     if (!field) return '';
     if (field.type === 'bool-sep') return field.value ? 'Yes' : 'No';
     return field.value ?? '';
+  }
+  getAuthorName(): string {
+    const authorField = this.fields.find((f) => f.type === 'multi-big');
+    if (!authorField || !authorField.value) return '';
+    return `${authorField.value.firstName} ${authorField.value.lastName}`;
   }
 }

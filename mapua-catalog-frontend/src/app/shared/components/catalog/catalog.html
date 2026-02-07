@@ -1,1 +1,16 @@
-<app-book-card></app-book-card>
+<div class="catalog-grid">
+  <app-book-card
+    *ngFor="let book of books"
+    [bookData]="book.cardData"
+    [isMini]="true"
+    [showButton]="false"
+    (click)="selectable ? toggleSelection(book) : null"
+    [class.selected]="selectedBooks.includes(book)"
+  ></app-book-card>
+</div>
+
+<!-- Add to Kanban Button -->
+<!--<button *ngIf="selectable && selectedBooks.length > 0" (click)="addToKanban()">
+  Add to Kanban
+</button> -->
+

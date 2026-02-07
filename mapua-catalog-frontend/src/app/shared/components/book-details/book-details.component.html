@@ -70,23 +70,14 @@
       </ng-container>
     </div>
   </div>
-  <div class="card-holder">
-    <div class="card-cover">
-      <div class="cover-icon">
-        <span class="material-icons" style="font-size: 64px">menu_book</span>
-        <span class="cover-text">ISBN</span>
-      </div>
-    </div>
-
-    <div class="card-details">
-      <div class="field-preview" *ngFor="let field of cardFields">
-        <span class="material-icons field-icon" style="font-size: 32px">{{ field.icon }}</span>
-        <span class="field-value">{{ getFieldValue(field.label) }}</span>
-      </div>
-
-      <button class="action-button">
-        {{ isEditPage ? 'Save Changes' : 'Add Book' }}
-      </button>
-    </div>
-  </div>
+  <app-book-card
+    [bookData]="[
+      { label: 'Title No.', value: getFieldValue('Title No.'), icon: 'title' },
+      { label: 'Author', value: getAuthorName(), icon: 'person' },
+      { label: 'Year', value: getFieldValue('Year'), icon: 'calendar_today' },
+      { label: 'Collection', value: getFieldValue('Collection'), icon: 'collections_bookmark' },
+      { label: 'Suppress', value: getFieldValue('Suppress') ? 'Yes' : 'No', icon: 'block' },
+    ]"
+    [isEditPage]="true"
+  ></app-book-card>
 </body>

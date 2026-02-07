@@ -1,0 +1,9 @@
+app-book-card.selected {
+  border: 2px solid #007bff;
+  box-shadow: 0 0 8px rgba(0, 123, 255, 0.5);
+}
+.catalog-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
