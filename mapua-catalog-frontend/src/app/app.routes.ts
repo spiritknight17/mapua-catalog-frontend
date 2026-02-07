@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router';
 import { LoginPage } from './features/login-page/login/login-page';
-import { McBoard } from './features/kanban-board/kanban-board-page.component';
+import { McBoard } from './features/mc-board/mc-board';
 import { ForgotPassword } from './features/login-page/forgot-password/forgot-password';
 import { PasswordRecovery } from './features/login-page/password-recovery/password-recovery';
 import { ResetPassword } from './features/login-page/reset-password/reset-password';

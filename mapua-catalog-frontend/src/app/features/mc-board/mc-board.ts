@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
-import { HeaderComponent } from '../app/header.component/header.component';
-import { MainLabelComponent } from '../app/main-label/main-label';
+import { HeaderComponent } from '../../core/header/header.component';
+import { MainLabelComponent } from '../../shared/components/main-label/main-label';
 import { CommonModule } from '@angular/common';
-import { KanbanCard } from '../app/kanban-card/kanban-card';
+import { KanbanCard } from '../../shared/components/kanban-card/kanban-card';
 
 @Component({
   selector: 'app-mc-board',
@@ -14,7 +14,6 @@ export class McBoard {
   trackByTitle(index: number, task: any) {
     return task.title;
   }
-
 
   columns = [
     {
