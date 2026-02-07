@@ -7,7 +7,7 @@
   overflow-y: auto; /* scroll only this component */
 }
 
-body {
+.book {
   display: flex;
   border-radius: 8px;
   background-color: white;
@@ -109,82 +109,6 @@ body {
   border-radius: 4px;
 }
 
-.card-holder {
+app-book-card {
   flex: 1;
-  display: flex;
-  flex-direction: column;
-  padding: 20px;
-  gap: 1rem;
-  background-color: #f5f5f5;
-  border-radius: 8px;
-}
-
-/* Top block: book cover */
-.card-cover {
-  flex: 2;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: relative;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  background-color: white;
-}
-
-.cover-icon {
-  position: relative;
-  display: inline-block;
-}
-
-.cover-text {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%) rotate(-45deg);
-  font-size: 24px;
-  color: rgba(0, 0, 0, 0.4);
-  font-weight: bold;
-}
-
-/* Bottom block: card-details */
-.card-details {
-  flex: 3;
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  background-color: white;
-  position: relative;
-}
-
-/* Each field preview row */
-.field-preview {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.field-icon {
-  color: #555;
-}
-
-.field-value {
-  font-size: 16px;
-  font-weight: 500;
-}
-
-/* Action button bottom right */
-.action-button {
-  position: absolute;
-  bottom: 10px;
-  right: 10px;
-  padding: 0.5rem 1rem;
-  font-size: 14px;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
 }

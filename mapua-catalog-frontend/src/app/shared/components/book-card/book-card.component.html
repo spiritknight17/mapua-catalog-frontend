@@ -2,19 +2,37 @@
   <!-- Top block: book cover -->
   <div class="card-cover">
     <div class="cover-icon">
-      <span class="material-icons" [style.fontSize]="isMini ? '40px' : '64px'">menu_book</span>
+      <span class="material-icons" [style.fontSize]="isMini ? '40px' : '64px'"> menu_book </span>
       <span class="cover-text">{{ coverText }}</span>
     </div>
   </div>
 
   <!-- Bottom block: card-details -->
   <div class="card-details">
-    <div class="field-preview" *ngFor="let field of bookData">
+    <div class="field-preview">
       <span class="material-icons field-icon" [style.fontSize]="isMini ? '20px' : '32px'">
-        {{ field.icon }}
+        title
       </span>
-      <span class="field-value" [style.fontSize]="isMini ? '12px' : '16px'">
-        {{ field.value }}
+      <span class="field-value">
+        {{ book.title }}
+      </span>
+    </div>
+
+    <div class="field-preview">
+      <span class="material-icons field-icon" [style.fontSize]="isMini ? '20px' : '32px'">
+        person
+      </span>
+      <span class="field-value">
+        {{ authorName }}
+      </span>
+    </div>
+
+    <div class="field-preview">
+      <span class="material-icons field-icon" [style.fontSize]="isMini ? '20px' : '32px'">
+        calendar_today
+      </span>
+      <span class="field-value">
+        {{ book.year }}
       </span>
     </div>
 

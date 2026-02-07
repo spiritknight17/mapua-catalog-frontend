@@ -48,6 +48,36 @@ export class BookService {
       suppress: true,
       price: 900,
     },
+    {
+      id: 4,
+      title: 'Learning Kanban',
+      author: { firstName: 'Alice', lastName: 'Johnson' },
+      isbn: '978-1112223334',
+      year: 2020,
+      collection: 'Management',
+      suppress: true,
+      price: 900,
+    },
+    {
+      id: 5,
+      title: 'Learning Kanban',
+      author: { firstName: 'Alice', lastName: 'Johnson' },
+      isbn: '978-1112223334',
+      year: 2020,
+      collection: 'Management',
+      suppress: true,
+      price: 900,
+    },
+    {
+      id: 5,
+      title: 'Learning Kanban',
+      author: { firstName: 'Alice', lastName: 'Johnson' },
+      isbn: '978-1112223334',
+      year: 2020,
+      collection: 'Management',
+      suppress: true,
+      price: 900,
+    },
   ];
 
   // Central store for components to subscribe to

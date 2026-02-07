@@ -28,3 +28,7 @@ body main {
   flex: 1; /* fill remaining vertical space under header */
   overflow: hidden; /* prevent main from scrolling */
 }
+
+section {
+  background-color: green;
+}

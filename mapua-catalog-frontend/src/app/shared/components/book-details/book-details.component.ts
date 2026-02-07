@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { BookCardComponent } from '../book-card/book-card.component';
+import { Book } from '../../../core/services/book.service';
 
 export interface BookDetailField {
   label: string;
@@ -99,9 +100,33 @@ export class BookDetailsComponent {
     if (field.type === 'bool-sep') return field.value ? 'Yes' : 'No';
     return field.value ?? '';
   }
-  getAuthorName(): string {
-    const authorField = this.fields.find((f) => f.type === 'multi-big');
-    if (!authorField || !authorField.value) return '';
-    return `${authorField.value.firstName} ${authorField.value.lastName}`;
+
+  getAuthorFirstName(): string {
+    const field = this.fields.find((f) => f.type === 'multi-big');
+    return field?.value?.firstName ?? '';
+  }
+
+  getAuthorLastName(): string {
+    const field = this.fields.find((f) => f.type === 'multi-big');
+    return field?.value?.lastName ?? '';
+  }
+
+  get previewBook(): Book {
+    return {
+      id: 0,
+
+      title: this.getFieldValue('Title No.') ?? '',
+
+      author: {
+        firstName: this.getAuthorFirstName(),
+        lastName: this.getAuthorLastName(),
+      },
+
+      year: Number(this.getFieldValue('Year')) || 0,
+      collection: this.getFieldValue('Collection') ?? '',
+      isbn: this.getFieldValue('ISBN / ISSN') ?? '',
+      suppress: Boolean(this.getFieldValue('Suppress')),
+      price: Number(this.getFieldValue('Price')) || 0,
+    };
   }
 }

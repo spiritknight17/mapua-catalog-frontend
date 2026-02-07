@@ -1,12 +1,6 @@
-// book-card.component.ts
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
-export interface BookCardField {
-  label: string;
-  value: any;
-  icon?: string;
-}
+import { Book } from '../../../core/services/book.service';
 
 @Component({
   selector: 'app-book-card',
@@ -15,9 +9,14 @@ export interface BookCardField {
   styleUrls: ['./book-card.component.css'],
 })
 export class BookCardComponent {
-  @Input() bookData!: BookCardField[]; // data to display
-  @Input() isMini: boolean = false; // whether it’s a small version
-  @Input() showButton: boolean = true; // whether to show the Add/Save button
-  @Input() coverText: string = 'ISBN'; // top cover text
-  @Input() isEditPage: boolean = false; // determines button text
+  @Input() book!: Book;
+
+  @Input() isMini: boolean = false;
+  @Input() showButton: boolean = true;
+  @Input() coverText: string = 'ISBN';
+  @Input() isEditPage: boolean = false;
+
+  get authorName(): string {
+    return `${this.book.author.firstName} ${this.book.author.lastName}`;
+  }
 }

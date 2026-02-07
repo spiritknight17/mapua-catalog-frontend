@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { BookCardComponent } from '../book-card/book-card.component';
 import { CommonModule } from '@angular/common';
+import { Book } from '../../../core/services/book.service';
 
 @Component({
   selector: 'app-catalog',
@@ -9,7 +10,7 @@ import { CommonModule } from '@angular/common';
   styleUrl: './catalog.css',
 })
 export class Catalog {
-  @Input() books: any[] = []; // list of book objects
+  @Input() books: Book[] = []; // list of book objects
   @Input() selectable: boolean = false; // whether books can be selected
   @Output() selectionChange = new EventEmitter<any[]>(); // emits selected books
 
