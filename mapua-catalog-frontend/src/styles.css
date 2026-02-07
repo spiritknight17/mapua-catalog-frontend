@@ -4,11 +4,27 @@
   --primary-color: #9a0000;
   --secondary-color: #e9a015;
   --background-color: #ebd9cb;
-  --tertiary-color: #5A0000;
+  --tertiary-color: #5a0000;
   --modal-color: white;
   --text-color: #111827;
 
   --font-sans: 'Inter', sans-serif;
   --font-serif: 'Merriweather', serif;
   --font-main: 'Poppins', sans-serif;
+}
+
+body {
+  background-color: #ebd9cb;
+}
+
+/* Body's Content */
+body main {
+  padding: 1rem;
+  height: calc(100vh - 50px);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  overflow-x: hidden;
+  flex: 1; /* fill remaining vertical space under header */
+  overflow: hidden; /* prevent main from scrolling */
 }
