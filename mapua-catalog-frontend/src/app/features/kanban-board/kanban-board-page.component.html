@@ -1,1 +1,23 @@
-<p>mc-board works!</p>
+<app-header></app-header>
+
+<main class="mc-board-body">
+  <app-main-label icon="view_kanban" label="KanbanBoard"></app-main-label>
+
+  <div class="board">
+    <div class="column" *ngFor="let column of columns">
+      <h2 [style.background-color]="column.color">{{ column.title }}</h2>
+      <div class="cards">
+        <app-kanban-card
+          *ngFor="let task of column.tasks; trackBy: trackByTitle"
+          [title]="task.title"
+          [tasksRemaining]="task.tasksRemaining"
+          [collection]="task.collection"
+          [year]="task.year"
+          [borderColor]="column.color"
+          [avatars]="task.avatars"
+          [tasks]="task.subtasks"
+        ></app-kanban-card>
+      </div>
+    </div>
+  </div>
+</main>

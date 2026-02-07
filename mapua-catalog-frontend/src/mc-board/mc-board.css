@@ -1,0 +1,58 @@
+.mc-board-body {
+  padding: 1rem;
+  background-color: #ebd9cb;
+  height: calc(100vh - 50px); /* 64px = header height */
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.board {
+  display: flex;
+  gap: 14px;
+  flex-grow: 1;
+  overflow-x: auto;
+}
+
+/* Each column */
+.column {
+  flex: 1 0 250px;
+  display: flex;
+  flex-direction: column;
+  background-color: #D8D8D8;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.1);
+  max-height: calc(100vh - 64px - 3rem);
+  border-radius: 8px;
+}
+
+.catalog {
+  background-color: #e9a015;
+}
+
+.column h2 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #f4f4f4;
+  background-color: #e9a015;
+  height: 50px;
+  border-radius: 8px 8px 0 0;
+  font-family: 'Poppins';
+  font-size: 20px;
+  flex-shrink: 0;
+}
+
+.cards {
+  flex-grow: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.card {
+  background-color: #e0e0e0;
+  padding: 0.5rem;
+  border-radius: 4px;
+  flex-shrink: 0;
+}

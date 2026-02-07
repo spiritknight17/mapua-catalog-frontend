@@ -26,7 +26,8 @@
               }
             ],
             "styles": [
-              "src/app/styles.css"
+              "src/material-theme.scss",
+              "src/styles.css"
             ],
             "server": "src/app/main.server.ts",
             "outputMode": "server",
