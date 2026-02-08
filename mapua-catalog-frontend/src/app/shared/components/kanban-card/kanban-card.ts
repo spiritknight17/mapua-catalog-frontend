@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 interface Task {
@@ -21,6 +21,8 @@ export class KanbanCard {
   @Input() borderColor: string = '#007bff';
   @Input() avatars: string[] = [];
   @Input() tasks: Task[] = [];
+  @Input() itemTaskId!: string;
+  @Output() addTaskClick = new EventEmitter<string>();
 
   /** Track toggle state */
   isExpanded = false;
@@ -30,6 +32,6 @@ export class KanbanCard {
   }
 
   addTask() {
-    console.log('Add task clicked');
+    this.addTaskClick.emit(this.itemTaskId);
   }
 }

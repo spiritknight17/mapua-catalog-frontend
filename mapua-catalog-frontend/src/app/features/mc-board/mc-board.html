@@ -1,7 +1,16 @@
 <app-header></app-header>
 
 <main class="mc-board-body">
-  <app-main-label icon="view_kanban" label="KanbanBoard"></app-main-label>
+  <app-main-label
+    icon="view_kanban"
+    label="KanbanBoard"
+    [actions]="[
+      { id: 'search', icon: 'search', tooltip: 'Search' },
+      { id: 'filter', icon: 'filter_list', tooltip: 'Filter' },
+      { id: 'add-book', icon: 'add', tooltip: 'Add Book' },
+    ]"
+    (actionClick)="handleAction($event)"
+  ></app-main-label>
 
   <div class="board">
     <div class="column" *ngFor="let column of columns">
@@ -9,6 +18,7 @@
       <div class="cards">
         <app-kanban-card
           *ngFor="let task of column.tasks; trackBy: trackByTitle"
+          [itemTaskId]="task.itemTaskId"  
           [title]="task.title"
           [tasksRemaining]="task.tasksRemaining"
           [collection]="task.collection"
@@ -16,8 +26,34 @@
           [borderColor]="column.color"
           [avatars]="task.avatars"
           [tasks]="task.subtasks"
+          (addTaskClick)="openAddTaskModal($event)"
         ></app-kanban-card>
       </div>
     </div>
   </div>
+  <section class="modal-overlay" *ngIf="activeModal">
+    <div class="modal-container">
+      <!-- MODAL CONTEXT -->
+      <app-main-label
+        *ngIf="activeModal === 'catalog'"
+        icon="library_books"
+        label="Select Book"
+        [actions]="catalogActions"
+        (actionClick)="handleModalAction($event)"
+      ></app-main-label>
+
+      <app-main-label
+        *ngIf="activeModal === 'book-details'"
+        icon="add_box"
+        label="Add Task"
+        [actions]="bookDetailsActions"
+        (actionClick)="handleModalAction($event)"
+      ></app-main-label>
+
+      <!-- MODAL CONTENT -->
+      <app-catalog [books]="books"  *ngIf="activeModal === 'catalog'" [selectable]="true"></app-catalog>
+
+      <app-book-details *ngIf="activeModal === 'book-details'" mode="task"></app-book-details>
+    </div>
+  </section>
 </main>
