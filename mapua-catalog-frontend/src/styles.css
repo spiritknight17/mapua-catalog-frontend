@@ -1,5 +1,5 @@
 @import 'tailwindcss';
-
+@import "../node_modules/angular-calendar/css/angular-calendar.css";
 :root {
   --primary-color: #9a0000;
   --secondary-color: #e9a015;
