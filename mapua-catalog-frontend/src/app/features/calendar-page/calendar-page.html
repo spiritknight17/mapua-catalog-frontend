@@ -2,8 +2,27 @@
 
 <main>
   <app-main-label icon="calendar_today" label="Calendar"></app-main-label>
-  <app-catalog></app-catalog>
-  <section>
-    
+  <section class="calendar-layout">
+    <div class="top-bar">
+      <search>
+        <form>
+          <input type="text" [formControl]="searchControl" class="taskSearch">
+        </form>
+      </search>
+       <select (change)="filterByPriority($event)">
+         <option value="all">All Priorities</option>
+         <option value="urgent">Urgent</option>
+       </select>
+    </div>
+
+    <div class="content-wrapper">
+      <div class="calendar-main">
+        <app-calendar-component [tasks]="tasks"></app-calendar-component>
+      </div>
+      
+      <aside class="deadline-sidebar">
+        <app-deadline-component [tasks]="tasks"></app-deadline-component>
+      </aside>
+    </div>
   </section>
 </main>

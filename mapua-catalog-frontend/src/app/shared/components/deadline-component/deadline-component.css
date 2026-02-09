@@ -1,0 +1,89 @@
+.deadline-panel {
+  background-color: #9A0000; 
+  padding: 20px;
+  border-radius: 8px;
+  color: #ffffff;
+  height: auto;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+  overflow: auto;
+}
+.deadline-panel h3{
+  font-size: 50px;
+  font-weight: 600;
+}
+.deadline-panel hr{
+  height: 10px;
+  background-color: #000000;
+  border: 0;
+}
+
+.task-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.task-card{
+  padding: 12px;
+  border-radius: 8px;
+  background-color: #1f1f1f;
+  transition: all .2s ease;
+}
+.task-card:hover {
+  background-color: #2a2a2a;
+  transform: translateX(5px);
+}
+.task-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: bold;
+}
+
+.task-date {
+  font-size: 0.85rem;
+  color: #aaa;
+}
+.task-details {
+  margin-top: 15px;
+  padding-top: 10px;
+  border-top: 1px solid #444;
+  font-size: 0.9rem;
+  color: #ccc;
+  animation: fadeIn 0.3s ease-out;
+}
+
+.detail-row {
+  margin-bottom: 5px;
+}
+
+.actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.actions button {
+  padding: 5px 12px;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 0.8rem;
+  background-color: #444;
+  color: white;
+}
+
+.actions .delete-btn {
+  background-color: #8b0000;
+}
+
+/* Status colors */
+.status-todo { background-color: #E9A015; color: #000; }
+.status-in-progress { background-color: #9A0000; }
+.status-review { background-color: #5F0707; }
+.status-mechanical { background-color: #BC9595; color: #2a2a2a; }
+.status-completed { background-color: #26B524; }
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-5px); }
+  to { opacity: 1; transform: translateY(0); }
+}

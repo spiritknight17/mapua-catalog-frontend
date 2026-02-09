@@ -25,12 +25,20 @@
                 "input": "public"
               }
             ],
-            "styles": ["node_modules/angular-calendar/css/angular-calendar.css", "src/material-theme.scss", "src/styles.css"],
+            "styles": [
+              "node_modules/bootstrap/dist/css/bootstrap.min.css",
+              "node_modules/angular-calendar/css/angular-calendar.css",
+              "src/material-theme.scss",
+              "src/styles.css"
+            ],
             "server": "src/app/main.server.ts",
             "outputMode": "server",
             "ssr": {
               "entry": "src/app/server.ts"
-            }
+            },
+            "polyfills": [
+              "@angular/localize/init"
+            ]
           },
           "configurations": {
             "production": {

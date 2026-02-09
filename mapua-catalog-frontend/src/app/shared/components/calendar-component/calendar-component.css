@@ -1,0 +1,86 @@
+
+.calendar-container{
+  background-color: #ffffff;
+  padding: 10px 16px;
+  border-radius: 8px;
+}
+.calendar-header{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.calendar-header h2{
+  font-weight: 700;
+}
+.controls button{
+  margin-left: 8px;
+}
+.controls .active{
+  font-weight: 600;
+  text-decoration: underline;
+}
+.calendar-grid{
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 8px;
+  padding-top: 12px;
+}
+.weekday{
+  font-weight: 600;
+  text-align: center;
+}
+.calendar-cell{
+  min-height: 100px;
+  border-radius: 8px;
+  border: 1px solid #eee;
+  padding: 6px;
+  position: relative;
+  background-color: #fff;
+}
+.calendar-cell.today{
+  border-color: #000;
+}
+.calendar-cell.outside-month{
+  opacity: 0.4;
+}
+.day-number{
+  position: absolute;
+  top: 6px;
+  right: 8px;
+  font-weight: 600;
+}
+.badge-container{
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 18px;
+}
+.task-badge{
+  display: inline-block;
+  color: #fff;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  width: fit-content;
+}
+
+/* Status colors */
+.status-todo { background-color: #E9A015; }
+.status-in-progress { background-color: #9A0000; }
+.status-review { background-color: #5F0707; }
+.status-mechanical { background-color: #BC9595; color: #2a2a2a; }
+.status-completed { background-color: #26B524; }
+
+.task-card {
+  border-left: 5px solid transparent;
+  background: rgba(0, 0, 0, 0.05); 
+  margin-bottom: 10px;
+  padding: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+.task-details {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid #ddd;
+}

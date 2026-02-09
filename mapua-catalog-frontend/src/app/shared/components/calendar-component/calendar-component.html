@@ -1,0 +1,20 @@
+<div class="calendar-container">
+    <div class="calendar-header">
+        <h2>{{ viewDate | date: 'MMMM yyyy'}}</h2>
+        <div class="controls">
+            <button (click)="previousMonth()">Prev</button>
+            <button (click)="nextMonth()">Next</button>
+            <button [class.active]="viewMode==='month'" (click)="switchToMonth()">Month</button>
+            <button [class.active]="viewMode==='week'" (click)="switchToWeek()">Week</button>
+        </div>
+    </div>
+    <div class="calendar-grid">
+        <div class="weekday" *ngFor="let day of weekDays">{{ day }}</div>
+        <div *ngFor="let day of daysInMonth" class="calendar-cell" [class.today]="isToday(day)" [class.outside-month]="day.getMonth() !== viewDate.getMonth() && viewMode==='month'">
+            <span class="day-number">{{ day | date: 'd'}}</span>
+            <div class="badge-container">
+                <div *ngFor="let task of getTasksForDate(day)" class="task-badge" [ngClass]="getStatusClass(task)">Due: {{ task.title | slice:0:16 }}...</div>
+            </div>
+        </div>
+    </div>
+</div>

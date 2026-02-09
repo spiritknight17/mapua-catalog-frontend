@@ -1,0 +1,52 @@
+.calendar-layout{
+    flex-direction: column;
+    display: flex;
+    gap: 20px;
+    background-color: #ffffff;
+    overflow: auto;
+}
+.content-wrapper{
+    display: flex;
+    flex-direction: row; 
+    gap: 20px;
+    flex: 1;            
+    min-height: 0;
+}
+.calendar-main{
+    width: 60%;
+}
+.deadline-sidebar{
+    width: 37%;
+}
+.top-bar{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 12px;
+    padding: 10px;
+}
+.top-bar input{
+    flex: 1;
+    padding: 10px 12px;
+    border-radius: 6px;
+    border: 1px solid #cccccc;
+    color: #000000;
+    background-color: #ffffff;
+}
+.top-bar input:focus{
+    outline: none;
+    border-color: #9A0000;
+    box-shadow: 0 0 0 2px rgba(154,0,0,0.15);
+}
+.top-bar input::placeholder{
+    color: #666666;
+    opacity: 1;
+}
+.top-bar select{
+    height: 40px;
+    padding: 0 12px;
+    border-radius: 6px;
+    border: 1px solid #cccccc;
+    background-color: #ffffff;
+    color: #000000;
+}
