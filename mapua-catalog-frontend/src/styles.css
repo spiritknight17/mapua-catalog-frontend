@@ -25,8 +25,9 @@ body main {
   flex-direction: column;
   gap: 20px;
   overflow-x: hidden;
-  flex: 1; /* fill remaining vertical space under header */
-  overflow: hidden; /* prevent main from scrolling */
+  flex: 1; 
+  overflow: hidden; 
+  position: relative;
 }
 
 section {

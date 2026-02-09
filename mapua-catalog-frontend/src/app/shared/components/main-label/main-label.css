@@ -1,21 +1,30 @@
 .main-label {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   font-size: 2.5rem;
   font-weight: 600;
   font-family: var(--font-main);
   line-height: 1;
-  padding-right: 40px;
 }
 
+/* LEFT SIDE (unchanged behavior) */
 .label-inner {
   display: inline-flex;
   align-items: center;
   gap: 12px;
-  border-bottom: 6px solid #5A0000;
+  border-bottom: 6px solid #5a0000;
   padding-right: 30px;
 }
 
+/* RIGHT SIDE */
+.label-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Icon sizing stays correct */
 mat-icon {
   font-size: 50px;
   display: flex;
@@ -25,8 +34,8 @@ mat-icon {
   width: 50px;
 }
 
-hr {
-  border: none;
-  border-bottom: 2px solid #ddd;
-  margin: 0.5rem 0 1rem 0;
+.label-actions mat-icon {
+  font-size: 28px;
+  width: 28px;
+  height: 28px;
 }
