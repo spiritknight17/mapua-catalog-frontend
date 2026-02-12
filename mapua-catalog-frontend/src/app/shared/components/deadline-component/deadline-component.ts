@@ -1,7 +1,7 @@
 import { Component, inject, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
-import { combineLatest, debounceTime, map, startWith, Observable } from 'rxjs';
+import { combineLatest, debounceTime, interval, map, startWith, Observable } from 'rxjs';
 import { TaskService } from '../../../core/services/task.service';
 import { CalendarComponentModel } from '../calendar-component/calendar-component-model';
 
@@ -12,6 +12,7 @@ import { CalendarComponentModel } from '../calendar-component/calendar-component
   styleUrl: './deadline-component.css',
 })
 export class DeadlineComponent {
+  public dueDate: Date = new Date(); 
   @Input() tasks: CalendarComponentModel[] = [];
   private taskService = inject(TaskService);
 
@@ -19,24 +20,43 @@ export class DeadlineComponent {
 
   searchControl = new FormControl('', { nonNullable: true });
 
-  sortedTasks$ = combineLatest([
+  groupedTasks$ = combineLatest([
     this.tasks$,
     this.searchControl.valueChanges.pipe(
       startWith(''),
       debounceTime(300)
-    )
+    ),
+    interval(60_000).pipe(startWith(0))
   ]).pipe(
-    map(([tasks, search]: [CalendarComponentModel[], string]) => {
-      const rank = { 'Urgent': 0, 'Upcoming': 1, 'Distance': 2 } as const;
-      return tasks
-        .filter((t: CalendarComponentModel) => 
-          t.title.toLowerCase().includes(search.toLowerCase()) // Fixed typo: toLowerCase
-        )
-        .sort((a: CalendarComponentModel, b: CalendarComponentModel) => {
-          const prio = rank[a.priorityStatus] - rank[b.priorityStatus];
-          if (prio !== 0) return prio;
-          return a.date.getTime() - b.date.getTime();
-        });
+    map(([tasks, search]: [CalendarComponentModel[], string, number]) => {
+      const normalizedSearch = search.trim().toLowerCase();
+      const filtered = tasks.filter((t: CalendarComponentModel) =>
+        t.title.toLowerCase().includes(normalizedSearch)
+      );
+
+      const groups: Record<'Urgent' | 'Upcoming' | 'Distance', CalendarComponentModel[]> = {
+        Urgent: [],
+        Upcoming: [],
+        Distance: [],
+      };
+
+      for (const task of filtered) {
+        groups[this.getDeadLineStatus(task.date)].push(task);
+      }
+
+      const sortWithinGroup = (a: CalendarComponentModel, b: CalendarComponentModel) => {
+        const byDate = a.date.getTime() - b.date.getTime();
+        if (byDate !== 0) return byDate;
+        return a.title.localeCompare(b.title);
+      };
+
+      return (['Urgent', 'Upcoming', 'Distance'] as const)
+        .map((key) => ({
+          key,
+          label: key,
+          tasks: groups[key].sort(sortWithinGroup),
+        }))
+        .filter((g) => g.tasks.length > 0);
     })
   );
 
@@ -56,5 +76,13 @@ export class DeadlineComponent {
   }
   toggleExpand(task: CalendarComponentModel): void{
     task.isExpanded = !task.isExpanded;
+  }
+
+  trackByTaskId(index: number, task: CalendarComponentModel) {
+    return task.id;
+  }
+
+  trackByGroupKey(index: number, group: { key: string }) {
+    return group.key;
   }
 }

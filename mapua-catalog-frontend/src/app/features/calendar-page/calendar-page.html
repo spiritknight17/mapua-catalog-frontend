@@ -4,14 +4,32 @@
   <app-main-label icon="calendar_today" label="Calendar"></app-main-label>
   <section class="calendar-layout">
     <div class="top-bar">
-      <search>
-        <form>
-          <input type="text" [formControl]="searchControl" class="taskSearch">
-        </form>
-      </search>
+        <search>
+          <form>
+            <div class="search-wrapper">
+              <input type="text" [formControl]="searchControl" class="taskSearch" placeholder="Search tasks...">
+              <button type="button" class="search-icon-btn" >
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="11" cy="11" r="8"></circle>
+                  <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                </svg>
+              </button>
+          </div>
+          </form>
+        </search>
        <select (change)="filterByPriority($event)">
          <option value="all">All Priorities</option>
-         <option value="urgent">Urgent</option>
+         <option value="Urgent">Urgent</option>
+         <option value="Upcoming">Upcoming</option>
+         <option value="Distance">Distance</option>
+       </select>
+       <select (change)="filterByStatus($event)">
+         <option value="all">All Status</option>
+         <option value="To Do">To Do</option>
+         <option value="In Progress">In Progress</option>
+         <option value="Review">Review</option>
+         <option value="Mechanical">Mechanical</option>
+         <option value="Completed">Completed</option>
        </select>
     </div>
 

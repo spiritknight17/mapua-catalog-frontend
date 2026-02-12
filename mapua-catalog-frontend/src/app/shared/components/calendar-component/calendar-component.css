@@ -10,14 +10,27 @@
   justify-content: space-between;
 }
 .calendar-header h2{
-  font-weight: 700;
+  font-weight: 600;
+  font-size: 32px;
 }
 .controls button{
-  margin-left: 8px;
+  margin: 10px;
+  background-color: #D9D9D9;
+  padding: 10px;
+  border: none;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  flex-direction: row;
+  width: 100px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
 }
 .controls .active{
   font-weight: 600;
-  text-decoration: underline;
+  background-color: #9A0000;
+}
+.controls button:hover{
+  background-color: #E9A015;
 }
 .calendar-grid{
   display: grid;
@@ -64,7 +77,6 @@
   width: fit-content;
 }
 
-/* Status colors */
 .status-todo { background-color: #E9A015; }
 .status-in-progress { background-color: #9A0000; }
 .status-review { background-color: #5F0707; }

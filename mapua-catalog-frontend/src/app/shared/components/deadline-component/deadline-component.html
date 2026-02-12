@@ -2,24 +2,31 @@
   <h3>Deadlines</h3>
   <hr>
   <div class="task-list">
-    <div *ngFor="let task of (sortedTasks$ | async)" 
-         class="task-card" 
-         [ngClass]="getStatusClass(task)"
-         (click)="toggleExpand(task)">
-      
-      <div class="task-header">
-        <strong>{{ task.title }}</strong>
-        <span>{{ task.date | date:'MMM d' }}</span>
-      </div>
+    <ng-container *ngFor="let group of (groupedTasks$ | async); trackBy: trackByGroupKey">
+      <div class="deadline-group">
+        <div class="deadline-group-label">{{ group.label }}</div>
+        <div class="deadline-group-items">
+          <div *ngFor="let task of group.tasks; trackBy: trackByTaskId"
+               class="task-card"
+               [ngClass]="getStatusClass(task)"
+               (click)="toggleExpand(task)">
+            
+            <div class="task-header">
+              <strong>{{ task.title }}</strong>
+              <span>{{ task.date | date:'MMM d' }}</span>
+            </div>
 
-      <div *ngIf="task.isExpanded" class="task-details">
-        <p>{{ task.description }}</p>
-        <small>Assignee: {{ task.assignee }}</small>
-        <div class="actions">
-          <button (click)="$event.stopPropagation()">Edit</button>
-          <button (click)="$event.stopPropagation()">Delete</button>
+            <div *ngIf="task.isExpanded" class="task-details">
+              <p>{{ task.description }}</p>
+              <small>Assignee: {{ task.assignee }}</small>
+              <div class="actions">
+                <button (click)="$event.stopPropagation()">Edit</button>
+                <button (click)="$event.stopPropagation()">Delete</button>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
+    </ng-container>
   </div>
 </div>

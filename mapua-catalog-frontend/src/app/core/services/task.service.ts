@@ -11,7 +11,7 @@ export class TaskService {
       title: 'Social and Professional Issues',
       description: 'Prepare slide deck',
       status: 'To Do',
-      date: new Date(2026, 0, 5),
+      date: new Date(2026, 2, 5),
       assignee: 'Matthew',
       project: 'Acad'
     }),
@@ -19,7 +19,7 @@ export class TaskService {
       title: 'Capstone Draft Review',
       description: 'First pass review',
       status: 'In Progress',
-      date: new Date(2026, 0, 6),
+      date: new Date(2026, 2, 6),
       assignee: 'Gian',
       project: 'Capstone'
     }),
@@ -27,7 +27,7 @@ export class TaskService {
       title: 'Mechanization Task',
       description: 'Hardware fit check',
       status: 'Mechanical',
-      date: new Date(2026, 0, 8),
+      date: new Date(2026, 2, 8),
       assignee: 'AA',
       project: 'Robotics'
     }),
@@ -35,7 +35,7 @@ export class TaskService {
       title: 'Module QA',
       description: 'Peer review module',
       status: 'Review',
-      date: new Date(2026, 0, 13),
+      date: new Date(2026, 2, 13),
       assignee: 'BB',
       project: 'Library'
     }),
@@ -43,7 +43,7 @@ export class TaskService {
       title: 'Submit Assignment',
       description: 'Final submission',
       status: 'Completed',
-      date: new Date(2026, 0, 20),
+      date: new Date(2026, 2, 20),
       assignee: 'Matthew',
       project: 'Acad'
     }),
@@ -51,7 +51,7 @@ export class TaskService {
       title: 'Project Sync',
       description: 'Team alignment',
       status: 'To Do',
-      date: new Date(2026, 0, 22),
+      date: new Date(2026, 2, 22),
       assignee: 'CC',
       project: 'Ops'
     }),
@@ -59,7 +59,7 @@ export class TaskService {
       title: 'Refactor Module',
       description: 'Cleanup and tests',
       status: 'In Progress',
-      date: new Date(2026, 0, 23),
+      date: new Date(2026, 2, 23),
       assignee: 'DD',
       project: 'Frontend'
     }),
@@ -67,7 +67,7 @@ export class TaskService {
       title: 'Presentation',
       description: 'Slides and demo',
       status: 'Review',
-      date: new Date(2026, 0, 30),
+      date: new Date(2026, 2, 30),
       assignee: 'Matthew',
       project: 'Acad'
     }),
@@ -75,7 +75,7 @@ export class TaskService {
       title: 'Backlog Grooming',
       description: 'Prioritize tickets',
       status: 'Mechanical',
-      date: new Date(2026, 0, 9),
+      date: new Date(2026, 2, 9),
       assignee: 'EE',
       project: 'Ops'
     }),
@@ -83,7 +83,7 @@ export class TaskService {
       title: 'Release Prep',
       description: 'Cut release',
       status: 'To Do',
-      date: new Date(2026, 0, 1),
+      date: new Date(2026, 2, 1),
       assignee: 'FF',
       project: 'Frontend'
     })

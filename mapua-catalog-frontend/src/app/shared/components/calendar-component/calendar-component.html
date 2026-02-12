@@ -2,8 +2,8 @@
     <div class="calendar-header">
         <h2>{{ viewDate | date: 'MMMM yyyy'}}</h2>
         <div class="controls">
-            <button (click)="previousMonth()">Prev</button>
-            <button (click)="nextMonth()">Next</button>
+            <button (click)="previousMonth()" class="previous">Prev</button>
+            <button (click)="nextMonth()" class="next">Next</button>
             <button [class.active]="viewMode==='month'" (click)="switchToMonth()">Month</button>
             <button [class.active]="viewMode==='week'" (click)="switchToWeek()">Week</button>
         </div>

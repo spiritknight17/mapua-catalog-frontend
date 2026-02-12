@@ -23,4 +23,9 @@ export class CalendarPage implements OnInit{
     const priority = selectElement.value;
     console.log('Filtering by:', priority);
   }
+  filterByStatus(event: Event) {
+    const selectElement = event.target as HTMLSelectElement;
+    const status = selectElement.value;
+    console.log('Filtering by:', status);
+  }
 }
