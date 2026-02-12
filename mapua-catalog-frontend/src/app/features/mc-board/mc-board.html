@@ -13,24 +13,37 @@
   ></app-main-label>
 
   <div class="board">
-    <div class="column" *ngFor="let column of columns">
-      <h2 [style.background-color]="column.color">{{ column.title }}</h2>
+    <div
+      class="column"
+      *ngFor="let column of columns"
+      cdkDropList
+      [id]="column.id"
+      [cdkDropListData]="column.tasks"
+      [cdkDropListConnectedTo]="connectedDropLists"
+      (cdkDropListDropped)="drop($event)"
+    >
+      <h2 [style.background-color]="column.color">
+        {{ column.title }}
+      </h2>
+
       <div class="cards">
-        <app-kanban-card
-          *ngFor="let task of column.tasks; trackBy: trackByTitle"
-          [itemTaskId]="task.itemTaskId"  
-          [title]="task.title"
-          [tasksRemaining]="task.tasksRemaining"
-          [collection]="task.collection"
-          [year]="task.year"
-          [borderColor]="column.color"
-          [avatars]="task.avatars"
-          [tasks]="task.subtasks"
-          (addTaskClick)="openAddTaskModal($event)"
-        ></app-kanban-card>
+        <div *ngFor="let task of column.tasks; trackBy: trackByTitle" cdkDrag>
+          <app-kanban-card
+            [itemTaskId]="task.itemTaskId"
+            [title]="task.title"
+            [tasksRemaining]="task.tasksRemaining"
+            [collection]="task.collection"
+            [year]="task.year"
+            [borderColor]="column.color"
+            [avatars]="task.avatars"
+            [tasks]="task.subtasks"
+            (addTaskClick)="openAddTaskModal($event)"
+          ></app-kanban-card>
+        </div>
       </div>
     </div>
   </div>
+
   <section class="modal-overlay" *ngIf="activeModal">
     <div class="modal-container">
       <!-- MODAL CONTEXT -->
@@ -51,7 +64,11 @@
       ></app-main-label>
 
       <!-- MODAL CONTENT -->
-      <app-catalog [books]="books"  *ngIf="activeModal === 'catalog'" [selectable]="true"></app-catalog>
+      <app-catalog
+        [books]="books"
+        *ngIf="activeModal === 'catalog'"
+        [selectable]="true"
+      ></app-catalog>
 
       <app-book-details *ngIf="activeModal === 'book-details'" mode="task"></app-book-details>
     </div>
