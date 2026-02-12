@@ -1,0 +1,82 @@
+.calendar-layout{
+    flex-direction: column;
+    display: flex;
+    gap: 20px;
+    background-color: #ffffff;
+    overflow: auto;
+}
+.content-wrapper{
+    display: flex;
+    flex-direction: row; 
+    gap: 20px;
+    flex: 1;            
+    min-height: 0;
+}
+.calendar-main{
+    width: 60%;
+}
+.deadline-sidebar{
+    width: 37%;
+}
+.top-bar{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+}
+.top-bar input{
+    padding: 10px;
+    border-radius: 6px;
+    border: 2px solid #9A0000;
+    color: #000000;
+    background-color: #ffffff;
+    width: 250px;
+}
+.top-bar input:focus{
+    outline: none;
+    border-color: #E9A015;
+}
+.top-bar input::placeholder{
+    color: #666666;
+    opacity: 1;
+}
+.top-bar select{
+    padding: 10px;
+    border-radius: 6px;
+    border: 2px solid #9A0000;
+    color: #000000;
+    background-color: #ffffff;
+    width: 250px;
+}
+.top-bar select:focus{
+    outline: none;
+    border-color: #E9A015;
+}
+.search-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+.taskSearch {
+  width: 100%;
+  padding: 10px 40px 10px 10px; 
+  border-radius: 6px;
+  border: 2px solid #9A0000;
+  box-sizing: border-box;
+}
+.search-icon-btn {
+  position: absolute;
+  right: 10px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  color: #D3D3D3;
+  transition: color 0.2s;
+}
+.search-icon-btn:hover {
+  color: #808080;
+}
