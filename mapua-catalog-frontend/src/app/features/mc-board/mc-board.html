@@ -63,14 +63,6 @@
         (actionClick)="handleModalAction($event)"
       ></app-main-label>
 
-      <!-- MODAL CONTENT -->
-      <app-catalog
-        [books]="books"
-        *ngIf="activeModal === 'catalog'"
-        [selectable]="true"
-      ></app-catalog>
-
-      <app-book-details *ngIf="activeModal === 'book-details'" mode="task"></app-book-details>
     </div>
   </section>
 </main>

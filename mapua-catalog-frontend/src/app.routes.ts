@@ -2,8 +2,6 @@ import { Routes } from '@angular/router';
 
 import { LoginPage } from './app/features/login-page/login/login-page';
 import { McBoard } from './app/features/mc-board/mc-board';
-import { BookCatalogPageComponent } from './app/features/book-catalog/pages/book-catalog-page.component';
-import { EncodeBookPageComponent } from './app/features/encode-book/encode-book-page.component';
 import { AnalyticsPageComponent } from './app/features/analytics/analytics-page.component';
 
 import { ForgotPassword } from './app/features/login-page/forgot-password/forgot-password';
@@ -22,7 +20,5 @@ export const routes: Routes = [
 
   // Main app
   { path: 'mc-board', component: McBoard },
-  { path: 'book-catalog', component: BookCatalogPageComponent },
-  { path: 'add-book', component: EncodeBookPageComponent },
   { path: 'calendar', component: CalendarPage },
 ];

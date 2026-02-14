@@ -6,7 +6,7 @@ src/
         header.component.html
       services/             
         auth.service.ts
-        book.service.ts
+        task.service.ts
       guards/              
         auth.guard.ts
         admin.guard.ts
@@ -21,13 +21,6 @@ src/
       directives/
       pipes/
     features/
-      book-catalog/
-        pages/
-          book-catalog-page.component.ts
-          book-catalog-page.component.html
-        modals/
-          book-selection-modal.component.ts
-          book-selection-modal.component.html
       kanban-board/
         kanban-board-page.component.ts
         kanban-board-page.html

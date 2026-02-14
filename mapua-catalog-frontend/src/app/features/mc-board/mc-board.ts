@@ -3,8 +3,6 @@ import { HeaderComponent } from '../../core/header/header.component';
 import { MainLabelComponent } from '../../shared/components/main-label/main-label';
 import { CommonModule } from '@angular/common';
 import { KanbanCard } from '../../shared/components/kanban-card/kanban-card';
-import { Catalog } from '../../shared/components/catalog/catalog';
-import { BookDetailsComponent } from '../../shared/components/book-details/book-details.component';
 import { Book, BookService } from '../../core/services/book.service';
 import { CdkDragDrop, DragDropModule, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 
@@ -34,8 +32,6 @@ interface KanbanColumn {
     MainLabelComponent,
     CommonModule,
     KanbanCard,
-    Catalog,
-    BookDetailsComponent,
     CommonModule,
     DragDropModule,
   ],
