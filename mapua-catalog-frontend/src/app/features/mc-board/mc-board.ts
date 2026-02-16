@@ -1,352 +1,123 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
 import { HeaderComponent } from '../../core/header/header.component';
 import { MainLabelComponent } from '../../shared/components/main-label/main-label';
 import { CommonModule } from '@angular/common';
-import { KanbanCard } from '../../shared/components/kanban-card/kanban-card';
-import { Book, BookService } from '../../core/services/book.service';
-import { CdkDragDrop, DragDropModule, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
+import {
+  CdkDragDrop,
+  DragDropModule,
+  moveItemInArray,
+  transferArrayItem,
+} from '@angular/cdk/drag-drop';
+import { HttpClient } from '@angular/common/http';
 
-type McBoardModal = null | 'catalog' | 'book-details';
-
-interface KanbanTask {
-  itemTaskId: string;
-  title: string;
-  tasksRemaining: number;
-  collection: string;
-  year: number;
-  avatars: string[];
-  subtasks: any[];
-}
-
-interface KanbanColumn {
-  id: string;
+// Frontend Interfaces
+interface Column {
+  id: TaskStatus;
   title: string;
   color: string;
-  tasks: KanbanTask[];
+  tasks: Task[];
+}
+
+export interface Task {
+  id: number;
+  title: string;
+  description?: string;
+  postDate: Date;
+  completionDate?: Date;
+  deadlineDate?: Date;
+  priority: 'low' | 'medium' | 'high';
+  status: TaskStatus;
+}
+
+export type TaskStatus = 'todo' | 'in-progress' | 'to review' | 'on-hold' | 'completed';
+
+// Backend Interface
+interface TaskDto {
+  id: number;
+  title: string;
+  description: string | null;
+  postDate: string; // ISO string from backend
+  completionDate: string; // ISO string
+  deadlineDate: string; // ISO string
+  priority: 'low' | 'medium' | 'high';
+  status: string; // we'll normalize later
 }
 
 @Component({
   selector: 'app-mc-board',
-  imports: [
-    HeaderComponent,
-    MainLabelComponent,
-    CommonModule,
-    KanbanCard,
-    CommonModule,
-    DragDropModule,
-  ],
+  imports: [HeaderComponent, MainLabelComponent, CommonModule, CommonModule, DragDropModule],
   templateUrl: './mc-board.html',
   styleUrl: './mc-board.css',
 })
 export class McBoard implements OnInit {
-  columns: KanbanColumn[] = [
-    {
-      id: 'todo',
-      title: 'To Do',
-      color: '#E9A015',
-      tasks: [
-        {
-          itemTaskId: 'task-1',
-          title: 'Screen Acting Skills',
-          tasksRemaining: 4,
-          collection: 'SMS',
-          year: 2020,
-          avatars: ['AA', 'BB'],
-          subtasks: [
-            { type: 'Metadata Entry', user: 'Gian' },
-            { type: 'Classification', user: 'Balong' },
-            { type: 'Subject Headings', user: 'Derven' },
-            { type: 'Quality Check', user: 'Matthew' },
-          ],
-        },
-        {
-          itemTaskId: 'task-2',
-          title: 'Media Experiences: Engaging W...',
-          tasksRemaining: 3,
-          collection: 'Email',
-          year: 2021,
-          avatars: ['CC'],
-          subtasks: [
-            { type: 'Metadata Entry', user: 'Gian' },
-            { type: 'Subject Headings', user: 'Derven' },
-            { type: 'Quality Check', user: 'Matthew' },
-          ],
-        },
-        {
-          itemTaskId: 'task-3',
-          title: 'Screen Voting Skills',
-          tasksRemaining: 2,
-          collection: 'SMS',
-          year: 2020,
-          avatars: ['AA', 'BB', 'CC'],
-          subtasks: [
-            { type: 'Metadata Entry', user: 'Gian' },
-            { type: 'Classification', user: 'Balong' },
-          ],
-        },
-        {
-          itemTaskId: 'task-4',
-          title: 'Media Files! The Awakening.',
-          tasksRemaining: 1,
-          collection: 'Email',
-          year: 2021,
-          avatars: ['CC', 'DD'],
-          subtasks: [{ type: 'Quality Check', user: 'Matthew' }],
-        },
-        {
-          itemTaskId: 'task-5',
-          title: 'Atomic Habits',
-          tasksRemaining: 4,
-          collection: 'SMS',
-          year: 2020,
-          avatars: ['AA', 'BB'],
-          subtasks: [
-            { type: 'Metadata Entry', user: 'Gian' },
-            { type: 'Classification', user: 'Balong' },
-            { type: 'Subject Headings', user: 'Derven' },
-            { type: 'Quality Check', user: 'Matthew' },
-          ],
-        },
-      ],
-    },
-    {
-      id: 'in-progress',
-      title: 'In Progress',
-      color: '#9A0000',
-      tasks: [
-        {
-          itemTaskId: 'task-2',
-          title: 'Book of Life',
-          tasksRemaining: 3,
-          collection: 'Email',
-          year: 2021,
-          avatars: ['CC'],
-          subtasks: [
-            { type: 'Metadata Entry', user: 'Gian' },
-            { type: 'Subject Headings', user: 'Derven' },
-            { type: 'Quality Check', user: 'Matthew' },
-          ],
-        },
-        {
-          itemTaskId: 'task-2',
-          title: 'ET: The Extra-Terrestrial',
-          tasksRemaining: 3,
-          collection: 'Email',
-          year: 2021,
-          avatars: ['CC'],
-          subtasks: [
-            { type: 'Metadata Entry', user: 'Gian' },
-            { type: 'Subject Headings', user: 'Derven' },
-            { type: 'Quality Check', user: 'Matthew' },
-          ],
-        },
-        {
-          itemTaskId: 'task-2',
-          title: "Harry Potter and the Sorcerer's Stone",
-          tasksRemaining: 3,
-          collection: 'Email',
-          year: 2021,
-          avatars: ['CC'],
-          subtasks: [
-            { type: 'Metadata Entry', user: 'Gian' },
-            { type: 'Subject Headings', user: 'Derven' },
-            { type: 'Quality Check', user: 'Matthew' },
-          ],
-        },
-        {
-          itemTaskId: 'task-2',
-          title: 'Transformers: Rise of the Beasts',
-          tasksRemaining: 3,
-          collection: 'Email',
-          year: 2021,
-          avatars: ['CC'],
-          subtasks: [
-            { type: 'Metadata Entry', user: 'Gian' },
-            { type: 'Subject Headings', user: 'Derven' },
-            { type: 'Quality Check', user: 'Matthew' },
-          ],
-        },
-      ],
-    },
-    {
-      id: 'review',
-      title: 'Review',
-      color: '#5F0707',
-      tasks: [
-        {
-          itemTaskId: 'task-2',
-          title: 'Maze Runner: The Death Cure',
-          tasksRemaining: 3,
-          collection: 'Email',
-          year: 2021,
-          avatars: ['CC'],
-          subtasks: [
-            { type: 'Metadata Entry', user: 'Gian' },
-            { type: 'Subject Headings', user: 'Derven' },
-            { type: 'Quality Check', user: 'Matthew' },
-          ],
-        },
-        {
-          itemTaskId: 'task-2',
-          title: 'Fantastic Beasts: The Secrets of Dumbledore',
-          tasksRemaining: 3,
-          collection: 'Email',
-          year: 2021,
-          avatars: ['CC'],
-          subtasks: [
-            { type: 'Metadata Entry', user: 'Gian' },
-            { type: 'Subject Headings', user: 'Derven' },
-            { type: 'Quality Check', user: 'Matthew' },
-          ],
-        },
-      ],
-    },
-    {
-      id: 'mechanical',
-      title: 'Mechanical',
-      color: '#BC9595',
-      tasks: [
-        {
-          itemTaskId: 'task-2',
-          title: 'Casper',
-          tasksRemaining: 3,
-          collection: 'Email',
-          year: 2021,
-          avatars: ['CC'],
-          subtasks: [
-            { type: 'Metadata Entry', user: 'Gian' },
-            { type: 'Subject Headings', user: 'Derven' },
-            { type: 'Quality Check', user: 'Matthew' },
-          ],
-        },
-        {
-          itemTaskId: 'task-2',
-          title: 'Ghost Files',
-          tasksRemaining: 3,
-          collection: 'Email',
-          year: 2021,
-          avatars: ['CC'],
-          subtasks: [
-            { type: 'Metadata Entry', user: 'Gian' },
-            { type: 'Subject Headings', user: 'Derven' },
-            { type: 'Quality Check', user: 'Matthew' },
-          ],
-        },
-      ],
-    },
-    {
-      id: 'completed',
-      title: 'Completed',
-      color: '#26B524',
-      tasks: [
-        {
-          itemTaskId: 'task-2',
-          title: 'Back to the Future: Part II',
-          tasksRemaining: 3,
-          collection: 'Email',
-          year: 2021,
-          avatars: ['CC'],
-          subtasks: [
-            { type: 'Metadata Entry', user: 'Gian' },
-            { type: 'Subject Headings', user: 'Derven' },
-            { type: 'Quality Check', user: 'Matthew' },
-          ],
-        },
-        {
-          itemTaskId: 'task-2',
-          title: 'Jumanji: Welcome to the Jungle',
-          tasksRemaining: 3,
-          collection: 'Email',
-          year: 2021,
-          avatars: ['CC'],
-          subtasks: [
-            { type: 'Metadata Entry', user: 'Gian' },
-            { type: 'Subject Headings', user: 'Derven' },
-            { type: 'Quality Check', user: 'Matthew' },
-          ],
-        },
-      ],
-    },
+  private cdr = inject(ChangeDetectorRef);
+  http = inject(HttpClient);
+
+  //accessToken = localStorage.getItem('access_token');
+  accessToken =
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJEZXJ2ZW4iLCJleHAiOjE3NzEyNTg5NzcsInR5cGUiOiJhY2Nlc3MifQ.7QmtC__GvuHKHPA8NhIAmk0UCZJzn6rMY3iHA9cdua8';
+
+  tasks: Task[] = [];
+
+  columns: Column[] = [
+    { id: 'todo', title: 'To Do', color: '#E9A015', tasks: [] },
+    { id: 'in-progress', title: 'In Progress', color: '#9A0000', tasks: [] },
+    { id: 'to review', title: 'Review', color: '#5F0707', tasks: [] },
+    { id: 'on-hold', title: 'On Hold', color: '#BC9595', tasks: [] },
+    { id: 'completed', title: 'Completed', color: '#26B524', tasks: [] },
   ];
 
-  pageActions = [
-    { id: 'search', icon: 'search', tooltip: 'Search' },
-    { id: 'filter', icon: 'filter_list', tooltip: 'Filter' },
-    { id: 'add-book', icon: 'add', tooltip: 'Add Book' },
-    { id: 'add-task', icon: 'add', tooltip: 'Add Task' },
-  ];
-
-  catalogActions = [
-    { id: 'confirm', icon: 'check', tooltip: 'Add to Board' },
-    { id: 'close', icon: 'close', tooltip: 'Close' },
-  ];
-
-  bookDetailsActions = [
-    { id: 'save', icon: 'save', tooltip: 'Save Task' },
-    { id: 'close', icon: 'close', tooltip: 'Close' },
-  ];
-
-  activeModal: McBoardModal = null;
-
+  // Action Buttons
   handleAction(actionId: string) {
+    alert(`Action: ${actionId}`);
     switch (actionId) {
       case 'add-book':
-        this.activeModal = 'catalog';
+        console.log(this.tasks);
         break;
     }
   }
 
-  handleModalAction(actionId: string) {
-    switch (actionId) {
-      case 'close':
-        this.closeModal();
-        break;
+  // Kanban Board Data Frontend
 
-      case 'confirm':
-        // catalog → add selected books to board
-        break;
+  // Kanban Board Backend (DTO)
 
-      case 'save':
-        // book-details → save task
-        break;
+  private mapToTask(dto: TaskDto): Task {
+    return {
+      id: dto.id,
+      title: dto.title,
+      description: dto.description ?? undefined,
+      postDate: new Date(dto.postDate),
+      completionDate: dto.completionDate ? new Date(dto.completionDate) : undefined,
+      deadlineDate: dto.deadlineDate ? new Date(dto.deadlineDate) : undefined,
+      priority: dto.priority as 'low' | 'medium' | 'high',
+      status: this.normalizeStatus(dto.status),
+    };
+  }
+
+  private normalizeStatus(status: string): TaskStatus {
+    switch (status.toLowerCase()) {
+      case 'to do':
+        return 'todo';
+      case 'in progress':
+        return 'in-progress';
+      case 'to review':
+        return 'to review';
+      case 'on hold':
+        return 'on-hold';
+      case 'completed':
+        return 'completed';
+      default:
+        return 'todo';
     }
   }
 
-  closeModal() {
-    this.activeModal = null;
-  }
-
-  selectedItemTaskId: string | null = null;
-
-  openAddTaskModal(itemTaskId: string) {
-    this.selectedItemTaskId = itemTaskId;
-    this.activeModal = 'book-details';
-    console.log('Open Add Task Modal for itemTaskId:', itemTaskId);
-  }
-
-  books: Book[] = [];
-
-  constructor(private bookService: BookService) {}
-
+  // For drag and drop logic
   connectedDropLists: string[] = [];
 
-  ngOnInit(): void {
-    // Subscribe to the shared books data
-    this.bookService.books$.subscribe((books) => {
-      this.books = books;
-    });
-    this.connectedDropLists = this.columns.map((c) => c.id);
-
-    // Fetch books (currently mock data)
-    this.bookService.fetchAllBooks();
-  }
-
-  drop(event: CdkDragDrop<KanbanTask[]>) {
+  drop(event: CdkDragDrop<Task[]>) {
     if (event.previousContainer === event.container) {
-      // Reordering inside same column
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
     } else {
-      // Moving between columns
       transferArrayItem(
         event.previousContainer.data,
         event.container.data,
@@ -355,10 +126,38 @@ export class McBoard implements OnInit {
       );
     }
 
-    console.log(this.columns); // verify structure
+    console.log(this.columns);
+  }
+  trackByColumnId(index: number, column: Column) {
+    return column.id;
   }
 
-  trackByTitle(index: number, task: any) {
-    return task.title;
+  trackByTaskId(index: number, task: Task) {
+    return task.id;
+  }
+
+  ngOnInit(): void {
+    // Initialize drag-drop connections
+    this.connectedDropLists = this.columns.map((c) => c.id);
+
+    // Fetch tasks from backend
+    this.http
+      .get<TaskDto[]>('http://localhost:8000/rest/task/getTasks', {
+        headers: { Authorization: `Bearer ${this.accessToken}` },
+      })
+      .subscribe((data) => {
+        // Map backend DTOs to frontend Task interface
+        this.tasks = data.map((dto) => this.mapToTask(dto));
+
+        // Assign tasks to columns
+        this.columns.forEach((col) => {
+          col.tasks = this.tasks.filter((t) => t.status === col.id);
+        });
+
+        console.log('Columns with tasks:', this.columns);
+
+        // Force Angular to update view
+        this.cdr.detectChanges();
+      });
   }
 }

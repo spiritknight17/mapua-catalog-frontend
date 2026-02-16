@@ -18,7 +18,7 @@ main {
   overflow-x: auto;
 }
 
-/* Each column */
+/* Column */
 .column {
   flex: 1 0 250px;
   display: flex;
@@ -28,16 +28,11 @@ main {
   border-radius: 8px;
 }
 
-.catalog {
-  background-color: #e9a015;
-}
-
 .column h2 {
   display: flex;
   justify-content: center;
   align-items: center;
   color: #f4f4f4;
-  background-color: #e9a015;
   height: 50px;
   border-radius: 8px 8px 0 0;
   font-family: 'Poppins';
@@ -45,6 +40,7 @@ main {
   flex-shrink: 0;
 }
 
+/* Cards */
 .cards {
   flex-grow: 1;
   overflow-y: auto;
