@@ -1,3 +1,16 @@
+main {
+  background-color: #ebd9cb;
+   padding: 1rem;
+  height: calc(100vh - 50px);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  overflow-x: hidden;
+  flex: 1; 
+  overflow: hidden; 
+  position: relative;
+}
+
 .board {
   display: flex;
   gap: 14px;
