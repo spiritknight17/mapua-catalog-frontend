@@ -7,7 +7,7 @@
     [actions]="[
       { id: 'search', icon: 'search', tooltip: 'Search' },
       { id: 'filter', icon: 'filter_list', tooltip: 'Filter' },
-      { id: 'add-book', icon: 'add', tooltip: 'Add Book' },
+      { id: 'add-task', icon: 'add', tooltip: 'Add Task' },
     ]"
     (actionClick)="handleAction($event)"
   ></app-main-label>
@@ -22,13 +22,67 @@
       [cdkDropListConnectedTo]="connectedDropLists"
       (cdkDropListDropped)="drop($event)"
     >
-      <h2 [style.background-color]="column.color">{{ column.title }}</h2>
+      <h2 [style.background-color]="column.color">
+        {{ column.title }} ({{ column.tasks.length }})
+      </h2>
 
-      <div *ngFor="let task of column.tasks; trackBy: trackByTaskId" class="task-card" cdkDrag>
-        <h3>{{ task.title }}</h3>
-        <p>Priority: {{ task.priority }}</p>
-        <p>Deadline: {{ task.deadlineDate | date: 'short' }}</p>
+      <div
+        *ngFor="let task of column.tasks; trackBy: trackByTaskId"
+        class="card"
+        [style.border-left-color]="column.color"
+        cdkDrag
+      >
+        <div class="card-top">
+          <div class="card-title">{{ task.title }}</div>
+
+          <div class="card-info">
+            <span><span class="label">Priority:</span> {{ task.priority }}</span>
+            <span><span class="label">Date Posted:</span> {{ task.postDate | date: 'short' }}</span>
+            <span *ngIf="task.deadlineDate"
+              ><span class="label">Deadline:</span> {{ task.deadlineDate | date: 'short' }}</span
+            >
+            <span *ngIf="task.completionDate"
+              ><span class="label">Completed:</span> {{ task.completionDate | date: 'short' }}</span
+            >
+          </div>
+
+          <h2 class="num-days" [style.color]="getDaysRemaining(task) < 0 ? 'red' : 'inherit'">
+            {{ getDaysRemaining(task) }} days
+          </h2>
+        </div>
       </div>
     </div>
   </div>
+
+  <!-- ADD TASK MODAL -->
+  <!-- ADD TASK MODAL -->
+<section
+  class="modal-overlay"
+  *ngIf="activeModal === 'add-task'"
+  (click)="closeAddTaskModal()"
+>
+  <div class="modal-container" (click)="$event.stopPropagation()">
+    <!-- MODAL CONTENT -->
+    <h3>Add New Task</h3>
+
+    <label>Title:</label>
+    <input [(ngModel)]="newTask.title" placeholder="Task title" />
+
+    <label>Description:</label>
+    <textarea [(ngModel)]="newTask.description"></textarea>
+
+    <label>Deadline:</label>
+    <input
+      type="date"
+      [ngModel]="newTask.deadlineDate | date:'yyyy-MM-dd'"
+      (ngModelChange)="updateDeadline($event)"
+    />
+
+    <div class="modal-actions">
+      <button (click)="submitNewTask()">Create Task</button>
+      <button (click)="closeAddTaskModal()">Cancel</button>
+    </div>
+  </div>
+</section>
+
 </main>
