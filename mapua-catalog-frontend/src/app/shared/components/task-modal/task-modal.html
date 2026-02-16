@@ -1,0 +1,50 @@
+<section class="modal-overlay" (click)="onClose()">
+  <div class="modal-container" (click)="$event.stopPropagation()">
+    <h3 *ngIf="mode === 'add'">Add Task</h3>
+    <h3 *ngIf="mode === 'view'">View Task</h3>
+    <h3 *ngIf="mode === 'edit'">Update Task</h3>
+
+    <label>Title:</label>
+    <input [(ngModel)]="editableTask.title" [readonly]="mode === 'view'" />
+
+    <label>Description:</label>
+    <textarea [(ngModel)]="editableTask.description" [readonly]="mode === 'view'"></textarea>
+
+    <label>Deadline:</label>
+    <input
+      type="date"
+      [ngModel]="editableTask.deadlineDate | date: 'yyyy-MM-dd'"
+      (ngModelChange)="onDeadlineChange($event)"
+      [readonly]="mode === 'view'"
+    />
+
+    <label>Priority:</label>
+    <select [(ngModel)]="editableTask.priority" [disabled]="mode === 'view'">
+      <option value="low">Low</option>
+      <option value="medium">Medium</option>
+      <option value="high">High</option>
+    </select>
+
+    <label>Status:</label>
+    <select [(ngModel)]="editableTask.status" [disabled]="mode === 'view'">
+      <option value="todo">To Do</option>
+      <option value="in progress">In Progress</option>
+      <option value="to review">Review</option>
+      <option value="on hold">On Hold</option>
+      <option value="completed">Completed</option>
+    </select>
+
+    <div class="modal-actions">
+      <!-- VIEW MODE -->
+      <button *ngIf="mode === 'view'" (click)="modeChange.emit('edit')">Update</button>
+
+      <!-- ADD MODE -->
+      <button *ngIf="mode === 'add'" (click)="onSave()">Add Task</button>
+
+      <!-- EDIT MODE -->
+      <button *ngIf="mode === 'edit'" (click)="onSave()">Save Changes</button>
+
+      <button (click)="onClose()">Close</button>
+    </div>
+  </div>
+</section>

@@ -8,8 +8,9 @@ import {
   moveItemInArray,
   transferArrayItem,
 } from '@angular/cdk/drag-drop';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, provideHttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
+import { TaskModalComponent } from '../../shared/components/task-modal/task-modal';
 
 // Frontend Interfaces
 interface Column {
@@ -30,7 +31,7 @@ export interface Task {
   status: TaskStatus;
 }
 
-export type TaskStatus = 'todo' | 'in-progress' | 'to review' | 'on-hold' | 'completed' | 'bin';
+export type TaskStatus = 'todo' | 'in progress' | 'to review' | 'on hold' | 'completed' | 'bin';
 
 // Backend Interface
 interface TaskDto {
@@ -53,13 +54,14 @@ interface TaskDto {
     CommonModule,
     FormsModule,
     DragDropModule,
+    TaskModalComponent,
   ],
   templateUrl: './mc-board.html',
   styleUrl: './mc-board.css',
 })
 export class McBoard implements OnInit {
   private cdr = inject(ChangeDetectorRef);
-  http = inject(HttpClient);
+  private http = inject(HttpClient);
 
   accessToken = localStorage.getItem('access_token');
   //accessToken ='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJEZXJ2ZW4iLCJleHAiOjE3NzEyNTg5NzcsInR5cGUiOiJhY2Nlc3MifQ.7QmtC__GvuHKHPA8NhIAmk0UCZJzn6rMY3iHA9cdua8';
@@ -68,9 +70,9 @@ export class McBoard implements OnInit {
 
   columns: Column[] = [
     { id: 'todo', title: 'To Do', color: '#E9A015', tasks: [] },
-    { id: 'in-progress', title: 'In Progress', color: '#9A0000', tasks: [] },
+    { id: 'in progress', title: 'In Progress', color: '#9A0000', tasks: [] },
     { id: 'to review', title: 'Review', color: '#5F0707', tasks: [] },
-    { id: 'on-hold', title: 'On Hold', color: '#BC9595', tasks: [] },
+    { id: 'on hold', title: 'On Hold', color: '#BC9595', tasks: [] },
     { id: 'completed', title: 'Completed', color: '#26B524', tasks: [] },
     //{ id: 'bin', title: 'Bin', color: '#000000', tasks: [] },
   ];
@@ -106,11 +108,11 @@ export class McBoard implements OnInit {
       case 'to do':
         return 'todo';
       case 'in progress':
-        return 'in-progress';
+        return 'in progress';
       case 'to review':
         return 'to review';
       case 'on hold':
-        return 'on-hold';
+        return 'on hold';
       case 'completed':
         return 'completed';
       default:
@@ -128,40 +130,69 @@ export class McBoard implements OnInit {
   };
 
   // Modal Logic
-  activeModal: string | undefined; // controls which modal is currently open
+  activeModal = false;
+  modalMode: 'add' | 'view' | 'edit' = 'add';
+  selectedTask: Task | null = null;
 
   // Open modal
-  openAddTaskModal(task?: Task) {
-    this.activeModal = 'add-task';
-    // reset form
-    this.newTask = { title: '', description: '', deadlineDate: undefined };
+  openAddTaskModal() {
+    this.modalMode = 'add';
+    this.selectedTask = null;
+    this.activeModal = true;
   }
 
-  // Close modal
-  closeAddTaskModal() {
-    this.activeModal = undefined;
+  openViewTask(task: Task) {
+    this.modalMode = 'view';
+    this.selectedTask = task;
+    this.activeModal = true;
+  }
+
+  openEditTask() {
+    this.modalMode = 'edit';
+  }
+
+  closeModal() {
+    this.activeModal = false;
+    this.selectedTask = null;
   }
 
   // Submit new task
-  submitNewTask() {
-    if (!this.newTask.title) return;
+  saveTask(taskData: Task) {
+    // Build query string properly
+    const params = new URLSearchParams({
+      title: taskData.title,
+      description: taskData.description ?? '',
+      priority: taskData.priority,
+      status: taskData.status,
+      postDate: taskData.postDate.toISOString().split('T')[0], // only date
+      deadline: taskData.deadlineDate?.toISOString().split('T')[0] ?? '',
+    });
 
-    const task: Task = {
-      id: this.tasks.length + 1,
-      title: this.newTask.title!,
-      description: this.newTask.description,
-      postDate: new Date(),
-      completionDate: undefined,
-      deadlineDate: this.newTask.deadlineDate,
-      priority: 'low',
-      status: 'todo',
-    };
+    console.log('Query string:', params.toString());
+    console.log('modal mode:', this.modalMode);
 
-    this.tasks.push(task);
-    const column = this.columns.find((c) => c.id === task.status);
-    if (column) column.tasks.push(task);
+    if (this.modalMode === 'add') {
+      this.http
+        .post<TaskDto>(`http://localhost:8000/rest/task/createTask?${params.toString()}`, null, {
+          headers: { Authorization: `Bearer ${this.accessToken}` },
+        })
+        .subscribe((created) => {
+          const newTask = this.mapToTask(created);
+          this.tasks = [...this.tasks, newTask];
 
-    this.closeAddTaskModal();
+          // Rebuild columns
+          this.columns = this.columns.map((col) => ({
+            ...col,
+            tasks: this.tasks.filter((t) => t.status === col.id),
+          }));
+
+          this.cdr.detectChanges();
+          this.closeModal();
+          alert('Task added successfully!');
+        });
+    } else if (this.modalMode === 'edit') {
+      this.updateTaskBackend(taskData);
+    }
   }
 
   // For drag and drop logic
@@ -170,18 +201,34 @@ export class McBoard implements OnInit {
   /* Helper functions */
   drop(event: CdkDragDrop<Task[]>) {
     if (event.previousContainer === event.container) {
+      // Same column, just reorder
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
     } else {
-      transferArrayItem(
-        event.previousContainer.data,
-        event.container.data,
-        event.previousIndex,
-        event.currentIndex,
-      );
+      // Task moved to a new column
+      const movedTask = event.previousContainer.data[event.previousIndex];
+
+      // Create a new task object with updated status
+      const updatedTask: Task = { ...movedTask, status: event.container.id as TaskStatus };
+
+      // Update the main tasks array
+      this.tasks = this.tasks.map((t) => (t.id === updatedTask.id ? updatedTask : t));
+
+      // Call backend
+      this.updateTaskBackend(updatedTask);
+
+      // Rebuild columns with fresh object references
+      this.columns = this.columns.map((col) => ({
+        ...col,
+        tasks: this.tasks.filter((t) => t.status === col.id).map((t) => ({ ...t })),
+      }));
+
+      // Force Angular/CDK to detect changes
+      this.cdr.detectChanges();
     }
 
-    console.log(this.columns);
+    console.log('Tasks after drag-drop:', this.tasks);
   }
+
   trackByColumnId(index: number, column: Column) {
     return column.id;
   }
@@ -202,6 +249,42 @@ export class McBoard implements OnInit {
   // For Task Form
   updateDeadline(dateString: string) {
     this.newTask.deadlineDate = dateString ? new Date(dateString) : undefined;
+  }
+
+  // Update to Backend
+  updateTaskBackend(taskData: Task) {
+    const params = new URLSearchParams({
+      taskID: taskData.id.toString(),
+      title: taskData.title,
+      description: taskData.description ?? '',
+      priority: taskData.priority,
+      status: taskData.status,
+      postDate: taskData.postDate.toISOString().split('T')[0], // only date if needed
+      deadline: taskData.deadlineDate?.toISOString().split('T')[0] ?? '',
+    });
+
+    console.log('Updating task with params:', params.toString());
+
+    this.http
+      .put<TaskDto>(`http://localhost:8000/rest/task/updateTask?${params.toString()}`, null, {
+        headers: { Authorization: `Bearer ${this.accessToken}` },
+      })
+      .subscribe((updated) => {
+        const updatedTask = this.mapToTask(updated);
+
+        this.tasks = this.tasks.map((t) => (t.id === updatedTask.id ? updatedTask : t));
+
+        this.columns = this.columns.map((col) => ({
+          ...col,
+          tasks: this.tasks.filter((t) => t.status === col.id).map((t) => ({ ...t })),
+        }));
+
+        this.cdr.detectChanges();
+
+        alert(`Task "${updatedTask.title}" updated successfully!`);
+        this.closeModal();
+      });
+    console.log('Sent update request for task:', taskData);
   }
 
   // On Init

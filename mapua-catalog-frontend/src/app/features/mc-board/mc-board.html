@@ -31,6 +31,7 @@
         class="card"
         [style.border-left-color]="column.color"
         cdkDrag
+        (click)="openViewTask(task)"
       >
         <div class="card-top">
           <div class="card-title">{{ task.title }}</div>
@@ -53,36 +54,12 @@
       </div>
     </div>
   </div>
-
-  <!-- ADD TASK MODAL -->
-  <!-- ADD TASK MODAL -->
-<section
-  class="modal-overlay"
-  *ngIf="activeModal === 'add-task'"
-  (click)="closeAddTaskModal()"
->
-  <div class="modal-container" (click)="$event.stopPropagation()">
-    <!-- MODAL CONTENT -->
-    <h3>Add New Task</h3>
-
-    <label>Title:</label>
-    <input [(ngModel)]="newTask.title" placeholder="Task title" />
-
-    <label>Description:</label>
-    <textarea [(ngModel)]="newTask.description"></textarea>
-
-    <label>Deadline:</label>
-    <input
-      type="date"
-      [ngModel]="newTask.deadlineDate | date:'yyyy-MM-dd'"
-      (ngModelChange)="updateDeadline($event)"
-    />
-
-    <div class="modal-actions">
-      <button (click)="submitNewTask()">Create Task</button>
-      <button (click)="closeAddTaskModal()">Cancel</button>
-    </div>
-  </div>
-</section>
-
+  <app-task-modal
+    *ngIf="activeModal"
+    [mode]="modalMode"
+    [task]="selectedTask"
+    (save)="saveTask($event)"
+    (close)="closeModal()"
+    (modeChange)="modalMode = $event">
+  ></app-task-modal>
 </main>

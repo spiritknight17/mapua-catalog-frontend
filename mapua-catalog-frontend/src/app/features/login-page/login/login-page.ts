@@ -29,9 +29,13 @@ export class LoginPage {
   http = inject(HttpClient);
   router = inject(Router);
   error = signal<string | null>(null);
-  loginObj: any = {
+  /*loginObj: any = {
     username: '',
     password: '',
+  }; temporary */
+  loginObj: any = {
+    username: 'Derven',
+    password: 'jabolbol',
   };
   /*constructor(
     private authService: AuthService,

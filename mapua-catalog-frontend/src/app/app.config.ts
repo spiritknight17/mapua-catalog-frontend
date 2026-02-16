@@ -8,6 +8,9 @@ import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
-    provideRouter(routes), provideClientHydration(withEventReplay()), provideHttpClient(withFetch()), provideClientHydration()
-  ]
+    provideRouter(routes),
+    provideClientHydration(withEventReplay()),
+    provideHttpClient(withFetch()),
+    provideClientHydration(),
+  ],
 };
