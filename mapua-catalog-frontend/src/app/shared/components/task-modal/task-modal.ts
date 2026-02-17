@@ -37,10 +37,31 @@ export class TaskModalComponent {
     status: 'todo',
   };
 
+  /* Admin View */
+  showAddAttachment = false;
+
+  /** Hardcoded assignee for modal only */
+  selectedAssignee: 'admin' | 'employee' | 'student' = 'admin';
+
+  /* Comments */
+  comments: { author: 'admin' | 'employee' | 'me'; message: string }[] = [];
+
+  /** Text in the comment input */
+  newCommentText = '';
+
   ngOnChanges() {
     if (this.task) {
       this.editableTask = { ...this.task };
       this.originalTask = { ...this.task };
+
+      // Hardcoded comments for now:
+      this.comments = [
+        { author: 'admin', message: 'Admin comment for task.' },
+        { author: 'employee', message: 'Employee comment for task.' },
+      ];
+
+      // Admin View
+      this.selectedAssignee = 'admin'; // default
     } else if (this.mode === 'add') {
       this.editableTask = {
         id: 0,
@@ -52,6 +73,8 @@ export class TaskModalComponent {
       };
 
       this.originalTask = null;
+      this.comments = [];
+      this.selectedAssignee = 'admin'; // default
     }
   }
 
@@ -59,6 +82,8 @@ export class TaskModalComponent {
     this.save.emit(this.editableTask);
     console.log('Emitted task:', this.editableTask);
   }
+
+  isClosing = false; // track closing animation
 
   onClose() {
     if (this.mode === 'edit' && this.originalTask) {
@@ -76,7 +101,14 @@ export class TaskModalComponent {
       }
     }
 
-    this.close.emit();
+    // Trigger closing animation
+    this.isClosing = true;
+
+    // Delay removal until animation finishes (match your CSS duration)
+    setTimeout(() => {
+      this.close.emit(); // emit to parent to set activeModal = false
+      this.isClosing = false; // reset
+    }, 300); // 300ms matches modal-drop-fade duration
   }
 
   private compareDates(date1?: Date, date2?: Date): boolean {
@@ -87,5 +119,29 @@ export class TaskModalComponent {
 
   onDeadlineChange(value: string) {
     this.editableTask.deadlineDate = value ? new Date(value) : undefined;
+  }
+
+  /* Comments */
+  addComment() {
+    if (!this.newCommentText.trim()) return;
+
+    this.comments.push({
+      author: 'me', // your own user
+      message: this.newCommentText.trim(),
+    });
+
+    this.newCommentText = '';
+    setTimeout(() => {
+      const panel = document.querySelector('.comments-panel');
+      if (panel) panel.scrollTop = panel.scrollHeight; // auto-scroll to bottom
+    });
+  }
+
+  /** Handle Enter key in input */
+  handleCommentKey(event: KeyboardEvent) {
+    if (event.key === 'Enter' && !event.shiftKey) {
+      event.preventDefault();
+      this.addComment();
+    }
   }
 }
