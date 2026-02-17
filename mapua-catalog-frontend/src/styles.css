@@ -1,5 +1,7 @@
-@import "../node_modules/angular-calendar/css/angular-calendar.css";
+@import '../node_modules/angular-calendar/css/angular-calendar.css';
 @import 'tailwindcss';
+@import 'ngx-toastr/toastr';
+
 :root {
   --primary-color: #9a0000;
   --secondary-color: #e9a015;
@@ -11,4 +13,8 @@
   --font-sans: 'Inter', sans-serif;
   --font-serif: 'Merriweather', serif;
   --font-main: 'Poppins', sans-serif;
+}
+
+.toast-top-center {
+  top: 60px !important;
 }

@@ -11,6 +11,7 @@ import {
 import { HttpClient, provideHttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { TaskModalComponent } from '../../shared/components/task-modal/task-modal';
+import { ToastrService } from 'ngx-toastr';
 
 // Frontend Interfaces
 interface Column {
@@ -62,6 +63,7 @@ interface TaskDto {
 export class McBoard implements OnInit {
   private cdr = inject(ChangeDetectorRef);
   private http = inject(HttpClient);
+  private toastr = inject(ToastrService);
 
   accessToken = localStorage.getItem('access_token');
   //accessToken ='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJEZXJ2ZW4iLCJleHAiOjE3NzEyNTg5NzcsInR5cGUiOiJhY2Nlc3MifQ.7QmtC__GvuHKHPA8NhIAmk0UCZJzn6rMY3iHA9cdua8';
@@ -185,10 +187,15 @@ export class McBoard implements OnInit {
             ...col,
             tasks: this.tasks.filter((t) => t.status === col.id),
           }));
+          this.closeModal(); // sets activeModal = false
 
-          this.cdr.detectChanges();
-          this.closeModal();
-          alert('Task added successfully!');
+          // Close modal first
+          setTimeout(() => {
+            this.cdr.detectChanges(); // update view
+          }, 0);
+
+          // Show toast after modal is closed
+          this.toastr.success('Task added successfully!');
         });
     } else if (this.modalMode === 'edit') {
       this.updateTaskBackend(taskData);
@@ -251,6 +258,8 @@ export class McBoard implements OnInit {
     this.newTask.deadlineDate = dateString ? new Date(dateString) : undefined;
   }
 
+  // For Toast
+
   // Update to Backend
   updateTaskBackend(taskData: Task) {
     const params = new URLSearchParams({
@@ -278,11 +287,17 @@ export class McBoard implements OnInit {
           ...col,
           tasks: this.tasks.filter((t) => t.status === col.id).map((t) => ({ ...t })),
         }));
+        this.closeModal(); // sets activeModal = false
 
-        this.cdr.detectChanges();
+        setTimeout(() => {
+          this.cdr.detectChanges(); // update the view so modal disappears
 
-        alert(`Task "${updatedTask.title}" updated successfully!`);
-        this.closeModal();
+          // Then, show the toast
+          this.toastr.success(`Task "${updatedTask.title}" updated successfully!`, '', {
+            timeOut: 3000,
+            positionClass: 'toast-top-center', // adjust as needed
+          });
+        }, 0);
       });
     console.log('Sent update request for task:', taskData);
   }
