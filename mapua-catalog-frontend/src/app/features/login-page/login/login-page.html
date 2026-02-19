@@ -9,7 +9,7 @@
         <p>Cataloging Task Management Platform</p>
       </div>
 
-      <form method="POST" class = "Form" (ngSubmit)="onLogin()">
+      <form method="POST" class = "Form" (ngSubmit)="onLogin($event)">
         <h2>Login</h2>
         <div class="error-message"*ngIf="error()">{{ error() }}</div>
         <label for="username">Username</label>

@@ -12,6 +12,7 @@ import { HttpClient, provideHttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { TaskModalComponent } from '../../shared/components/task-modal/task-modal';
 import { ToastrService } from 'ngx-toastr';
+import { Router } from '@angular/router';
 
 // Frontend Interfaces
 interface Column {
@@ -64,6 +65,7 @@ export class McBoard implements OnInit {
   private cdr = inject(ChangeDetectorRef);
   private http = inject(HttpClient);
   private toastr = inject(ToastrService);
+  private router = inject(Router);
 
   accessToken = localStorage.getItem('access_token');
   //accessToken ='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJEZXJ2ZW4iLCJleHAiOjE3NzEyNTg5NzcsInR5cGUiOiJhY2Nlc3MifQ.7QmtC__GvuHKHPA8NhIAmk0UCZJzn6rMY3iHA9cdua8';
@@ -304,6 +306,10 @@ export class McBoard implements OnInit {
 
   // On Init
   ngOnInit(): void {
+    if (!this.accessToken){
+      this.router.navigate([''], { queryParams: {returnUrl: '/mc-board'}});
+      return;
+    }
     // Initialize drag-drop connections
     this.connectedDropLists = this.columns.map((c) => c.id);
 

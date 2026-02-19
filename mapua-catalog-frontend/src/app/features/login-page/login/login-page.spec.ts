@@ -4,7 +4,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { Location } from '@angular/common';
 import { of, throwError } from 'rxjs';
 import { LoginPage } from './login-page';
-import { McBoard } from '../../kanban-board/kanban-board-page.component';
+import { McBoard } from '../../mc-board/mc-board';
 import { ForgotPassword } from '../forgot-password/forgot-password';
 import { AuthService } from '../../../core/services/auth.service';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
@@ -40,4 +40,17 @@ describe('LoginPage navigation and auth', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   })
+  it('navigates to mc-board on successful login', async() =>{
+    spyOn(component['http'], 'post').and.returnValue(of({ access_token: 'a', refresh_token: 'b'}));
+    const spy = spyOn(router, 'navigateByUrl');
+    component.onLogin();
+    await fixture.whenStable();
+    expect(spy).toHaveBeenCalledWith('/mc-board');
+  });
+  it('shows error on 401', async () => {
+    spyOn(component['http'], 'post').and.returnValue(throwError(() => ({status: 401})));
+    component.onLogin();
+    await fixture.whenStable();
+    expect(component.error()).toBe('Invalid Credentials!');
+  });
 });

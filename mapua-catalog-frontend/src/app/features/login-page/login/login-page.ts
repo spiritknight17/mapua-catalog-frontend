@@ -47,7 +47,10 @@ export class LoginPage {
     request = request.clone({headers: request.headers.set('Authorization', 'bearer' + access_token + refresh_token)});
     return next.handle(request);
   }*/
-  onLogin() {
+  onLogin(event?: Event) {
+    if (event) {
+      event.preventDefault();
+    }
     this.error.set(null);
     const body = new HttpParams()
       .set('username', this.loginObj.username)

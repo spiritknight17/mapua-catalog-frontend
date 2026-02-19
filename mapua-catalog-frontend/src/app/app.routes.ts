@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-
+import { AuthGuard } from './core/guards/auth.guard';
 import { LoginPage } from './features/login-page/login/login-page';
 import { McBoard } from './features/mc-board/mc-board';
 import { AnalyticsPageComponent } from './features/analytics/analytics-page.component';
@@ -19,6 +19,6 @@ export const routes: Routes = [
   { path: 'password-reset-successful', component: PasswordResetSuccessful },
 
   // Main app
-  { path: 'mc-board', component: McBoard },
+  { path: 'mc-board', component: McBoard, canActivate: [AuthGuard] },
   { path: 'calendar', component: CalendarPage },
 ];
