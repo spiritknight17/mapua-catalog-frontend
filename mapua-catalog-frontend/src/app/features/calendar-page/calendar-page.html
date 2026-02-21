@@ -19,9 +19,9 @@
         </search>
        <select (change)="filterByPriority($event)">
          <option value="all">All Priorities</option>
-         <option value="Urgent">Urgent</option>
-         <option value="Upcoming">Upcoming</option>
-         <option value="Distance">Distance</option>
+         <option value="High">High</option>
+         <option value="Medium">Medium</option>
+         <option value="Low">Low</option>
        </select>
        <select (change)="filterByStatus($event)">
          <option value="all">All Status</option>
@@ -35,7 +35,7 @@
 
     <div class="content-wrapper">
       <div class="calendar-main">
-        <app-calendar-component [tasks]="tasks"></app-calendar-component>
+        <app-calendar-component [tasks]="calendarTasks"></app-calendar-component>
       </div>
       
       <aside class="deadline-sidebar">

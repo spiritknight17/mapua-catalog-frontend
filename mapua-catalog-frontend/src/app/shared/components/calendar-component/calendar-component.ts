@@ -2,10 +2,11 @@ import { Component, OnInit, Input, inject } from '@angular/core';
 import { CalendarComponentModel } from './calendar-component-model';
 import { CommonModule } from '@angular/common';
 import { TaskService } from '../../../core/services/task.service';
+import { CdkDragPlaceholder } from "@angular/cdk/drag-drop";
 
 @Component({
   selector: 'app-calendar-component',
-  imports: [CommonModule],
+  imports: [CommonModule, CdkDragPlaceholder],
   templateUrl: './calendar-component.html',
   styleUrl: './calendar-component.css',
 })
@@ -16,6 +17,7 @@ export class CalendarComponent implements OnInit {
   daysInMonth: Date[] = [];
   weekDays: string[] = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
   viewMode: 'month' | 'week' = 'month';
+  expandedTasks = new Set<string>();
   ngOnInit(){
       this.taskService.tasks$.subscribe(ts => {
         this.tasks = ts;
@@ -72,6 +74,20 @@ export class CalendarComponent implements OnInit {
       t.date.getMonth() === date.getMonth() &&
       t.date.getFullYear() === date.getFullYear()
     );
+  }
+  getDayKey(d: Date): string {
+    return `${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`;
+  }
+  isExpanded(d: Date): boolean{
+    return this.expandedTasks.has(this.getDayKey(d));
+  }
+  toggleTaskExpand(d: Date): void {
+    const k = this.getDayKey(d);
+    if (this.expandedTasks.has(k)){
+      this.expandedTasks.delete(k);
+    } else{
+      this.expandedTasks.add(k);
+    }
   }
   nextMonth(){
     this.viewDate = new Date(this.viewDate.setMonth(this.viewDate.getMonth() + 1));

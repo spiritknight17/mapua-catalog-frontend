@@ -22,11 +22,11 @@ export class CalendarComponentModel {
         const diffTime = this.date.getTime() - today.getTime();
         return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
     }
-    get priorityStatus(): 'Urgent' | 'Upcoming' | 'Distance'{
+    get priorityStatus(): 'High' | 'Medium' | 'Low'{
         const days = this.daysRemaining;
-        if (days <= 3) return 'Urgent';
-        if (days <= 7) return 'Upcoming';
-        return 'Distance';
+        if (days <= 3) return 'High';
+        if (days <= 7) return 'Medium';
+        return 'Low';
     }
     get tasksStatus(): 'To Do' | 'In Progress' | 'Review' | 'Mechanical' | 'Completed'{
         const s = (this.status || 'To Do') as any;

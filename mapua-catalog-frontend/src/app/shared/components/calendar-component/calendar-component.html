@@ -13,7 +13,23 @@
         <div *ngFor="let day of daysInMonth" class="calendar-cell" [class.today]="isToday(day)" [class.outside-month]="day.getMonth() !== viewDate.getMonth() && viewMode==='month'">
             <span class="day-number">{{ day | date: 'd'}}</span>
             <div class="badge-container">
-                <div *ngFor="let task of getTasksForDate(day)" class="task-badge" [ngClass]="getStatusClass(task)">Due: {{ task.title | slice:0:16 }}...</div>
+                <!--<div *ngFor="let task of getTasksForDate(day)" class="task-badge" [ngClass]="getStatusClass(task)">Due: {{ task.title | slice:0:16 }}...</div>-->
+                <ng-container *ngIf="!isExpanded(day) && getTasksForDate(day).length > 1; else showTasks">
+                    <div class="task-count">
+                        {{getTasksForDate(day).length}}tasks
+                    </div>
+                    <button class="see-more" (click)="toggleTaskExpand(day)">
+                        See more
+                    </button>
+                </ng-container>
+                <ng-template #showTasks>
+                    <div *ngFor="let task of getTasksForDate(day)" class="task-badge" [ngClass]="getStatusClass(task)">
+                        Due: {{ task.title | slice:0:16 }}...
+                    </div>
+                    <button *ngIf="getTasksForDate(day).length > 1" class="see-less" (click)="toggleTaskExpand(day)">
+                        See less
+                    </button>
+                </ng-template>
             </div>
         </div>
     </div>

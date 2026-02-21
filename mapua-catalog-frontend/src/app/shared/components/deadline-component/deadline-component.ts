@@ -34,10 +34,10 @@ export class DeadlineComponent {
         t.title.toLowerCase().includes(normalizedSearch)
       );
 
-      const groups: Record<'Urgent' | 'Upcoming' | 'Distance', CalendarComponentModel[]> = {
-        Urgent: [],
-        Upcoming: [],
-        Distance: [],
+      const groups: Record<'High' | 'Medium' | 'Low', CalendarComponentModel[]> = {
+        High: [],
+        Medium: [],
+        Low: [],
       };
 
       for (const task of filtered) {
@@ -50,7 +50,7 @@ export class DeadlineComponent {
         return a.title.localeCompare(b.title);
       };
 
-      return (['Urgent', 'Upcoming', 'Distance'] as const)
+      return (['High', 'Medium', 'Low'] as const)
         .map((key) => ({
           key,
           label: key,
@@ -62,9 +62,9 @@ export class DeadlineComponent {
 
   getDeadLineStatus(date: Date) {
     const diff = Math.floor((date.getTime() - Date.now()) / (1000 * 60 * 60 * 24));
-    if (diff <= 3) return 'Urgent';
-    if (diff <= 7) return 'Upcoming';
-    return 'Distance';
+    if (diff <= 3) return 'High';
+    if (diff <= 7) return 'Medium';
+    return 'Low';
   }
   getStatusClass(task: CalendarComponentModel): string {
     const s = task.tasksStatus;

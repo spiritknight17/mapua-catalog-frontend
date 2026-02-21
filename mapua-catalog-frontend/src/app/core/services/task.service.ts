@@ -1,97 +1,52 @@
-import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { Injectable, model } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { BehaviorSubject, Observable, map, switchMap } from 'rxjs';
 import { CalendarComponentModel } from '../../shared/components/calendar-component/calendar-component-model';
-
+interface taskAssignee{
+  id: number;
+  taskID: number;
+  assigneeID: number;
+}
+interface task {
+  id: number;
+  title: string;
+  description: string | null;
+  priority: string;
+  status: string;
+  postDate: string;
+  deadlineDate: string;
+  completionDate: string | null;
+}
 @Injectable({
   providedIn: 'root',
 })
 export class TaskService {
-  private mockTasks: CalendarComponentModel[] = [
-    new CalendarComponentModel({
-      title: 'Social and Professional Issues',
-      description: 'Prepare slide deck',
-      status: 'To Do',
-      date: new Date(2026, 2, 5),
-      assignee: 'Matthew',
-      project: 'Acad'
-    }),
-    new CalendarComponentModel({
-      title: 'Capstone Draft Review',
-      description: 'First pass review',
-      status: 'In Progress',
-      date: new Date(2026, 2, 6),
-      assignee: 'Gian',
-      project: 'Capstone'
-    }),
-    new CalendarComponentModel({
-      title: 'Mechanization Task',
-      description: 'Hardware fit check',
-      status: 'Mechanical',
-      date: new Date(2026, 2, 8),
-      assignee: 'AA',
-      project: 'Robotics'
-    }),
-    new CalendarComponentModel({
-      title: 'Module QA',
-      description: 'Peer review module',
-      status: 'Review',
-      date: new Date(2026, 2, 13),
-      assignee: 'BB',
-      project: 'Library'
-    }),
-    new CalendarComponentModel({
-      title: 'Submit Assignment',
-      description: 'Final submission',
-      status: 'Completed',
-      date: new Date(2026, 2, 20),
-      assignee: 'Matthew',
-      project: 'Acad'
-    }),
-    new CalendarComponentModel({
-      title: 'Project Sync',
-      description: 'Team alignment',
-      status: 'To Do',
-      date: new Date(2026, 2, 22),
-      assignee: 'CC',
-      project: 'Ops'
-    }),
-    new CalendarComponentModel({
-      title: 'Refactor Module',
-      description: 'Cleanup and tests',
-      status: 'In Progress',
-      date: new Date(2026, 2, 23),
-      assignee: 'DD',
-      project: 'Frontend'
-    }),
-    new CalendarComponentModel({
-      title: 'Presentation',
-      description: 'Slides and demo',
-      status: 'Review',
-      date: new Date(2026, 2, 30),
-      assignee: 'Matthew',
-      project: 'Acad'
-    }),
-    new CalendarComponentModel({
-      title: 'Backlog Grooming',
-      description: 'Prioritize tickets',
-      status: 'Mechanical',
-      date: new Date(2026, 2, 9),
-      assignee: 'EE',
-      project: 'Ops'
-    }),
-    new CalendarComponentModel({
-      title: 'Release Prep',
-      description: 'Cut release',
-      status: 'To Do',
-      date: new Date(2026, 2, 1),
-      assignee: 'FF',
-      project: 'Frontend'
-    })
-  ];
-  private tasksSubject = new BehaviorSubject<CalendarComponentModel[]>(this.mockTasks);
+  private tasksSubject = new BehaviorSubject<CalendarComponentModel[]>([]);
   tasks$: Observable<CalendarComponentModel[]> = this.tasksSubject.asObservable();
-  constructor() {}
-  setTasks(tasks: CalendarComponentModel[]) {
+  constructor(private http: HttpClient){}
+  private mapStatus(s: string): 'To Do' | 'In Progress' | 'Review' | 'Mechanical' | 'Completed' {
+    const v = (s || '').toLowerCase();
+    if (v === 'completed') return 'Completed';
+    if (v === 'in progress' || v === 'inprogress') return 'In Progress';
+    if (v === 'review') return 'Review';
+    if (v === 'mechanical') return 'Mechanical';
+    return 'To Do';
+  }
+  private toCalendarModel (t:task): CalendarComponentModel{
+    return new CalendarComponentModel({
+      id: String(t.id), title: t.title || '', description: t.description || '', status: this.mapStatus(t.status), date: t.deadlineDate ? new Date(t.deadlineDate): new Date(t.postDate),
+    });
+  }
+  loadCalendarForCurrentUser(): Observable<CalendarComponentModel[]>{
+    return this.http.get<taskAssignee[]>('http://localhost:8000/rest/calendar').pipe(switchMap(assignedTasks => this.http.get<task[]>('http://localhost:8000/rest/task/getTasks').pipe(map(allTasks => {
+      const ids = new Set(assignedTasks.map(a => a.taskID));
+      const filtered = allTasks.filter(t => ids.has(t.id));
+      const models = filtered.map(t => this.toCalendarModel(t));
+      this.tasksSubject.next(models);
+      return models;
+    }))));
+  }
+  setTasks(tasks: CalendarComponentModel[]){
     this.tasksSubject.next(tasks);
   }
 }
